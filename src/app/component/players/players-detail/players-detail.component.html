@@ -1,0 +1,20 @@
+<table class="table" *ngIf="games; else infoText">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Opponent name</th>
+            <th scope="col">status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let game of games; let i = index">
+            <th scope="row">{{ i + 1 }}</th>
+            <td>{{ game.oppnent_td }}</td>
+            <td>{{ game.status }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<ng-template #infoText>
+    <p>{{ responseMessage }}</p>
+</ng-template>

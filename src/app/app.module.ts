@@ -6,7 +6,8 @@ import { AppComponent } from './app.component';
 import {
   HomeComponent,
   PlayersListComponent,
-  NavbarComponent
+  NavbarComponent,
+  PlayersDetailComponent
 } from './component';
 import { DataService } from './service';
 import { AppRoutingModule } from './app.routing.module';
@@ -15,8 +16,9 @@ import { AppRoutingModule } from './app.routing.module';
   declarations: [
     AppComponent,
     HomeComponent,
+    NavbarComponent,
     PlayersListComponent,
-    NavbarComponent
+    PlayersDetailComponent
   ],
   imports: [
     BrowserModule,

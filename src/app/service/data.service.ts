@@ -7,13 +7,18 @@ import { Observable } from 'rxjs';
 export class DataService {
     constructor(private http: HttpClient) { }
 
-    listOfPlayers(): Observable<any> {
+    playersList(): Observable<any> {
         return this.getData('player/list')
+    }
+
+    playerDetail(playerId: number): Observable<any> {
+        return this.getData('player/' + playerId + '/game/list')
     }
 
     getData(params: string): Observable<any> {
         const url: string = this.getUrl() + params;
-        return this.http.get(url);
+        const headers = this.getHeaders();
+        return this.http.get(url, headers);
     }
 
     postData(): Observable<any> {
