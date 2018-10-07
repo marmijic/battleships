@@ -2,14 +2,14 @@
     <thead>
         <tr>
             <th scope="col">#</th>
-            <th scope="col">Opponent name</th>
+            <th scope="col">Game id</th>
             <th scope="col">status</th>
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let game of games; let i = index">
+        <tr *ngFor="let game of games; let i = index" (click)="navigateTo(game.game_id, game.status)">
             <th scope="row">{{ i + 1 }}</th>
-            <td>{{ game.oppnent_td }}</td>
+            <td>{{ game.game_id }}</td>
             <td>{{ game.status }}</td>
         </tr>
     </tbody>

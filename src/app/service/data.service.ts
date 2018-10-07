@@ -12,7 +12,7 @@ export class DataService {
         return this.getData('player/list')
     }
 
-    playerDetail(playerId: number): Observable<any> {
+    playerDetail(playerId: string): Observable<any> {
         return this.getData('player/' + playerId + '/game/list')
     }
 
@@ -22,6 +22,10 @@ export class DataService {
 
     createGame(opponentId: string, body: any): Observable<any> {
         return this.postData('player/' + opponentId + '/game', body)
+    }
+
+    gameStatus(playerId: string, gameId: string): Observable<any> {
+        return this.getData('player/' + playerId + '/game/' + gameId);
     }
 
     getData(params: string): Observable<any> {

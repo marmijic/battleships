@@ -11,7 +11,8 @@ import {
   PlayersListComponent,
   PlayersDetailComponent,
   PlayerCreateComponent,
-  GameCreateComponent
+  GameCreateComponent,
+  GamePlayComponent
 } from './component';
 import { DataService } from './service';
 import { AppRoutingModule } from './app.routing.module';
@@ -25,7 +26,8 @@ import { AppRoutingModule } from './app.routing.module';
     PlayersListComponent,
     PlayersDetailComponent,
     PlayerCreateComponent,
-    GameCreateComponent
+    GameCreateComponent,
+    GamePlayComponent
   ],
   imports: [
     BrowserModule,
