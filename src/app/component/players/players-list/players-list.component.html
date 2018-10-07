@@ -1,4 +1,4 @@
-<table class="table">
+<table class="table" *ngIf="players; else infoText">
     <thead>
         <tr>
             <th scope="col">#</th>
@@ -14,3 +14,7 @@
         </tr>
     </tbody>
 </table>
+
+<ng-template #infoText>
+    <app-error [errorMessage]="'No players!'"></app-error>
+</ng-template>

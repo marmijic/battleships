@@ -16,5 +16,5 @@
 </table>
 
 <ng-template #infoText>
-    <p>{{ responseMessage }}</p>
+    <app-error [errorMessage]="responseMessage"></app-error>
 </ng-template>
