@@ -12,7 +12,7 @@ export class PlayerCreateComponent {
   createPlayerForm: FormGroup;
   responseMessage: string = '';
 
-  constructor(private formBUilder: FormBuilder, private dataService: DataService) {
+  constructor(private FormBuilder: FormBuilder, private dataService: DataService) {
     this.setForm();
   }
 
@@ -44,7 +44,7 @@ export class PlayerCreateComponent {
   }
 
   setForm() {
-    this.createPlayerForm = this.formBUilder.group({
+    this.createPlayerForm = this.FormBuilder.group({
       nameInput: ['', [Validators.required]],
       emailInput: ['', [Validators.required]]
     })

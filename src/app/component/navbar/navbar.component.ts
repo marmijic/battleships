@@ -15,6 +15,10 @@ export class NavbarComponent {
     {
       name: 'Players',
       link: 'players'
+    },
+    {
+      name: 'Create game',
+      link: 'game-create'
     }
   ]
   constructor(private router: Router) { }

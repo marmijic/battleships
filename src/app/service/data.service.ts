@@ -20,6 +20,10 @@ export class DataService {
         return this.postData('/player', body);
     }
 
+    createGame(opponentId: string, body: any): Observable<any> {
+        return this.postData('player/' + opponentId + '/game', body)
+    }
+
     getData(params: string): Observable<any> {
         const url: string = this.getUrl() + params;
         const headers = this.getHeaders();

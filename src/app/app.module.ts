@@ -10,11 +10,11 @@ import {
   ErrorComponent,
   PlayersListComponent,
   PlayersDetailComponent,
-  PlayerCreateComponent
+  PlayerCreateComponent,
+  GameCreateComponent
 } from './component';
 import { DataService } from './service';
 import { AppRoutingModule } from './app.routing.module';
-import {  } from './component/players/player-create/player-create.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +24,8 @@ import {  } from './component/players/player-create/player-create.component';
     NavbarComponent,
     PlayersListComponent,
     PlayersDetailComponent,
-    PlayerCreateComponent
+    PlayerCreateComponent,
+    GameCreateComponent
   ],
   imports: [
     BrowserModule,
