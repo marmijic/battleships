@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
+import { Player } from '../models/player';
 
 @Injectable()
 export class DataService {
@@ -15,20 +16,19 @@ export class DataService {
         return this.getData('player/' + playerId + '/game/list')
     }
 
+    createPlayer(body: Player): Observable<any> {
+        return this.postData('/player', body);
+    }
+
     getData(params: string): Observable<any> {
         const url: string = this.getUrl() + params;
         const headers = this.getHeaders();
         return this.http.get(url, headers);
     }
 
-    postData(): Observable<any> {
-        const url: string = this.getUrl() + 'player';
+    postData(params: string, body: Player): Observable<any> {
+        const url: string = this.getUrl() + params;
         const headers = this.getHeaders();
-        let body = {
-            // name: "mariom",
-            // email: "mariom@gmail.com"
-        }
-
         return this.http.post(url, body, headers);
     }
 

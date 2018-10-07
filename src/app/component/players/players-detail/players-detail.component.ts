@@ -18,13 +18,14 @@ export class PlayersDetailComponent implements OnDestroy {
     this.subscriptions.push(this.route.params.subscribe(params => {
       this.dataService.playerDetail(params.id).subscribe(
         response => {
-          if (response.status === 200)
+          if (response.status === 200) {
             this.games = response.body.games;
+          }
           else {
             if (response.status === 204)
               this.responseMessage = "The player hasn't played any games yet!"
             else if (response.status === 404)
-                this.responseMessage = "The player does not exist!"
+              this.responseMessage = "The player does not exist!"
           }
         },
         error => {
