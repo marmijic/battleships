@@ -1,20 +1,29 @@
-<table class="table" *ngIf="players; else infoText">
-    <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Email</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let player of players; let i = index" [routerLink]="['/players/detail', player.id]" routerLinkActive="router-link-active">
-            <th scope="row">{{ i + 1 }}</th>
-            <td>{{ player.name }}</td>
-            <td>{{ player.email }}</td>
-        </tr>
-    </tbody>
-</table>
+<div class="row">
+    <div class="col-9 offset-2">
 
-<ng-template #infoText>
-    <app-error [errorMessage]="'No players!'"></app-error>
-</ng-template>
+        <i class="fa fa-plus-square" aria-hidden="true"></i>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <table class="table" *ngIf="players; else infoText">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let player of players; let i = index" [routerLink]="['/players/detail', player.id]" routerLinkActive="router-link-active">
+                    <th scope="row">{{ i + 1 }}</th>
+                    <td>{{ player.name }}</td>
+                    <td>{{ player.email }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <ng-template #infoText>
+            <app-error [errorMessage]="'No players!'"></app-error>
+        </ng-template>
+    </div>
+</div>
