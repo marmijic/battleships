@@ -1,18 +1,21 @@
 <div class="row">
     <div class="col-12">
         <h1>Self</h1>
-        <!-- <div class="row" *ngFor="let letter of rows">
-            <div *ngFor="let number of columns" style="border: 1px solid; height: 40px; width: 40px;" (click)="shot(number, letter)">
-                {{ number }} {{ letter }}
-            </div>
-        </div> -->
-        <div class="row" *ngFor="let row of grid">
-            <div *ngFor="let column of row" style="border: 1px solid; height: 50px; width: 50px;" (click)="shot(column.number, column.letter)">
+        <div>
+
+        </div>
+        <div class="row letter-row" *ngFor="let row of selfGrid">
+            <div class="field" *ngFor="let column of row" [ngClass]="{'empty-field': column.value === '.','ship-field': column.value === '#','missed-field': column.value === '0','shot-field': column.value === 'X'}">
                 {{ column.value }} {{ column.number }} {{ column.letter }}
             </div>
         </div>
     </div>
     <div class="col-12">
         <h1>Opponent</h1>
+        <div class="row letter-row" *ngFor="let row of opponentGrid">
+            <div class="field" *ngFor="let column of row" (click)="shot(column.number, column.letter)">
+                {{ column.value }} {{ column.number }} {{ column.letter }}
+            </div>
+        </div>
     </div>
 </div>

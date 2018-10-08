@@ -1,0 +1,26 @@
+.field {
+    height: 50px;
+    width: 50px;
+    border-top: 1px solid;
+    border-right: 1px solid;
+}
+
+.field:first-of-type {
+    border-left: 1px solid;
+}
+
+.letter-row:last-of-type .field {
+    border-bottom: 1px solid;
+}
+
+.ship-field {
+    background-color: #7e7e7e;
+}
+
+.shot-field {
+    background-color: #990000;
+}
+
+.missed-field {
+    background-color: #006161;
+}

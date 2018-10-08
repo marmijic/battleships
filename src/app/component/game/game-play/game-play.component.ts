@@ -2,6 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from '../../../service';
+import { Grid } from '../../../models/grid';
 
 @Component({
   selector: 'app-game-play',
@@ -13,23 +14,23 @@ export class GamePlayComponent implements OnDestroy {
   playerId: string;
   gameId: string;
   opponent: Array<any>;
+  opponentGrid: Array<Array<Grid>> = [];
   self: Array<any>;
+  selfGrid: Array<Array<Grid>> = [];
   columns: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   rows: Array<string> = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
-  grid: Array<any> = [];
-  bar: Array<any> = [];
   salvo: Array<any> = [];
 
   constructor(private route: ActivatedRoute, private dataService: DataService) {
-    this.setGrid();
     this.subscriptions.push(this.route.params.subscribe(params => {
       this.playerId = params.playerId;
       this.gameId = params.gameId;
       this.dataService.gameStatus(this.playerId, this.gameId).subscribe(
         response => {
-          console.log(response);
           this.opponent = response.body.opponent;
           this.self = response.body.self;
+          this.opponentGrid = this.setGrid(response.body.opponent.board);
+          this.selfGrid = this.setGrid(response.body.self.board);
         },
         error => {
           console.warn(error)
@@ -58,18 +59,20 @@ export class GamePlayComponent implements OnDestroy {
     )
   }
 
-  setGrid(): void {
-    for (let i = 0; i < this.rows.length; i++) {
-      let row: Array<any> = [];
-      for (let j = 0; j < this.columns.length; j++) {
+  setGrid(arr: Array<string>): Array<Array<Grid>> {
+    let grid: Array<Array<Grid>> = [];
+    for (let i = 0; i < arr.length; i++) {
+      let row: Array<Grid> = [];
+      let arrRow: Array<string> = Array.from(arr[i]);
+      for (let j = 0; j < arrRow.length; j++) {
         row.push({
-          value: '.',
+          value: arrRow[j],
           number: this.columns[j],
           letter: this.rows[i]
         })
       }
-      this.grid.push(row);
+      grid.push(row);
     }
-    console.log(Object.assign({}, this.grid))
+    return grid;
   }
 }
