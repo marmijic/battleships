@@ -1,26 +1,43 @@
 .field {
     height: 50px;
     width: 50px;
+    text-align: center;
+    line-height: 50px;
+}
+
+.field-border {
     border-top: 1px solid;
+    border-left: 1px solid;
+    cursor: pointer;
+}
+
+.letter {
+    border: 1px solid;
+}
+
+.field-border:last-of-type {
     border-right: 1px solid;
 }
 
-.field:first-of-type {
-    border-left: 1px solid;
+.letter-row:last-of-type .field-border {
+    border-bottom: 1px solid;
 }
 
-.letter-row:last-of-type .field {
-    border-bottom: 1px solid;
+.empty-field:hover {
+    background-color: #cccc00;
 }
 
 .ship-field {
     background-color: #7e7e7e;
+    cursor: default;
 }
 
 .shot-field {
     background-color: #990000;
+    cursor: no-drop;
 }
 
 .missed-field {
     background-color: #006161;
+    cursor: no-drop;
 }
