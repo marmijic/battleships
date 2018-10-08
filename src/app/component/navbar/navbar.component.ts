@@ -38,6 +38,10 @@ export class NavbarComponent {
     return this.router.url;
   }
 
+  navClick(): void {
+    this.checkWindowSize()
+  }
+
   private checkWindowSize(): void {
     const bodyWidth = document.getElementsByTagName('body')[0].offsetWidth;
     if (bodyWidth > 991) {
@@ -47,4 +51,6 @@ export class NavbarComponent {
       this.showNavbar = false;
     }
   }
+
+
 }

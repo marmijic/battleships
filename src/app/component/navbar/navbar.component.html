@@ -4,7 +4,7 @@
     <div class="navbar-collapse" *ngIf="showNavbar">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item" *ngFor="let navItem of navItems" [ngClass]="{'active':  '/' + navItem.link === getActive()}">
-                <a class="nav-link" [routerLink]="[navItem.link]" (click)="showNavbar = false">{{ navItem.name }}</a>
+                <a class="nav-link" [routerLink]="[navItem.link]" (click)="navClick()">{{ navItem.name }}</a>
             </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
