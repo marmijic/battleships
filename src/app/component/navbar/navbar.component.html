@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" [routerLink]="['/']">Battleships</a>
-    <button class="navbar-toggler" type="button"><span class="navbar-toggler-icon"></span></button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <button class="navbar-toggler" type="button" (click)="collapse()"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" #navbarContent>
         <ul class="navbar-nav mr-auto">
             <li class="nav-item" *ngFor="let navItem of navItems" [ngClass]="{'active':  '/' + navItem.link === getActive()}">
                 <a class="nav-link" [routerLink]="[navItem.link]">{{ navItem.name }}</a>

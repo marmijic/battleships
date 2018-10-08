@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
+  @ViewChild('navbarContent') navbarContent: ElementRef;
   navItems: Array<any> = [
     {
       name: 'Home',
@@ -23,7 +24,11 @@ export class NavbarComponent {
   ]
   constructor(private router: Router) { }
 
-  private getActive(): string {
+  collapse(): void {
+    this.navbarContent.nativeElement.style.display = 'block';
+  }
+
+  getActive(): string {
     return this.router.url;
   }
 

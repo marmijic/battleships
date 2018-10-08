@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { Player } from '../models/player';
@@ -28,25 +28,35 @@ export class DataService {
         return this.getData('player/' + playerId + '/game/' + gameId);
     }
 
+    gameShot(playerId: string, gameId: string, salvo: any) {
+        return this.putData('player/' + playerId + '/game/' + gameId, salvo)
+    }
+
     getData(params: string): Observable<any> {
         const url: string = this.getUrl() + params;
-        const headers = this.getHeaders();
-        return this.http.get(url, headers);
+        const options = this.getOptions();
+        return this.http.get(url, options);
     }
 
     postData(params: string, body: Player): Observable<any> {
         const url: string = this.getUrl() + params;
-        const headers = this.getHeaders();
-        return this.http.post(url, body, headers);
+        const options = this.getOptions();
+        return this.http.post(url, body, options);
+    }
+
+    putData(params: string, body: any): Observable<any> {
+        console.log(params, body)
+        const url: string = this.getUrl() + params;
+        const options = this.getOptions();
+        return this.http.put(url, body, options);
     }
 
     private getUrl(): string {
         return environment.apiBaseURL;
     }
 
-    private getHeaders(): any {
+    private getOptions(): any {
         return {
-            headers: new HttpHeaders().set('Content-Type', 'application/json'),
             observe: 'response'
         };
     }
