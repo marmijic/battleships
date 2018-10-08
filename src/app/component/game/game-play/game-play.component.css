@@ -23,7 +23,7 @@
     border-bottom: 1px solid;
 }
 
-.empty-field:hover {
+.opponent .empty-field:hover {
     background-color: #cccc00;
 }
 

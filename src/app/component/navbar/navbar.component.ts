@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
-  @ViewChild('navbarContent') navbarContent: ElementRef;
+  showNavbar: boolean = false;
   navItems: Array<any> = [
     {
       name: 'Home',
@@ -22,14 +22,29 @@ export class NavbarComponent {
       link: 'game-create'
     }
   ]
-  constructor(private router: Router) { }
+  constructor(private router: Router) {
+    this.checkWindowSize();
+  }
+
+  @HostListener('window:resize') onResize() {
+    this.checkWindowSize();
+  }
 
   collapse(): void {
-    this.navbarContent.nativeElement.style.display = 'block';
+    this.showNavbar = !this.showNavbar;
   }
 
   getActive(): string {
     return this.router.url;
   }
 
+  private checkWindowSize(): void {
+    const bodyWidth = document.getElementsByTagName('body')[0].offsetWidth;
+    if (bodyWidth > 991) {
+      this.showNavbar = true;
+    }
+    else {
+      this.showNavbar = false;
+    }
+  }
 }

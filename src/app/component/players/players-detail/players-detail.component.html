@@ -1,14 +1,18 @@
-<table class="table" *ngIf="games; else infoText">
+<table class="table text-center" *ngIf="games; else infoText">
     <thead>
         <tr>
-            <th scope="col">#</th>
-            <th scope="col">Game id</th>
-            <th scope="col">status</th>
+            <th>#</th>
+            <th>Challenger</th>
+            <th>Opponent</th>
+            <th>Game id</th>
+            <th>Status</th>
         </tr>
     </thead>
     <tbody>
         <tr *ngFor="let game of games; let i = index" (click)="navigateTo(game.game_id, game.status)">
-            <th scope="row">{{ i + 1 }}</th>
+            <th>{{ i + 1 }}</th>
+            <td>Mario</td>
+            <td>{{ game.opponentName }}</td>
             <td>{{ game.game_id }}</td>
             <td>{{ game.status }}</td>
         </tr>

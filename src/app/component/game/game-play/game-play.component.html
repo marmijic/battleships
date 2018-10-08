@@ -21,9 +21,9 @@
                 {{ number }}
             </div>
         </div>
-        <div class="row letter-row" *ngFor="let row of opponentGrid; let i = index">
+        <div class="row letter-row opponent" *ngFor="let row of opponentGrid; let i = index">
             <div class="field">{{ rows[i] }}</div>
-            <div class="field field-border" *ngFor="let column of row" (click)="shot(column.number, column.letter)">
+            <div class="field field-border" *ngFor="let column of row" (click)="shot(column.number, column.letter)" [ngClass]="{'empty-field': column.value === '.','ship-field': column.value === '#','missed-field': column.value === '0','shot-field': column.value === 'X'}">
             </div>
         </div>
     </div>
