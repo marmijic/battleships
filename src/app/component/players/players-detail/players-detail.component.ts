@@ -18,12 +18,12 @@ export class PlayersDetailComponent implements OnDestroy {
   player: Player = {
     name: '',
     email: '',
-    playerId: ''
+    id: ''
   };
 
   constructor(private router: Router, private route: ActivatedRoute, private dataService: DataService) {
     this.subscriptions.push(this.route.params.subscribe(params => {
-      this.player.playerId = params.id;
+      this.player.id = params.id;
       this.getPlayer(params.id).then(value => {
         this.player.name = value.name;
         this.player.email = value.email;
@@ -39,7 +39,7 @@ export class PlayersDetailComponent implements OnDestroy {
   }
 
   getData() {
-    this.dataService.playerDetail(this.player.playerId).subscribe(
+    this.dataService.playerDetail(this.player.id).subscribe(
       response => {
         if (response.status === 200) {
           this.games = response.body.games;
@@ -81,7 +81,7 @@ export class PlayersDetailComponent implements OnDestroy {
 
   navigateTo(gameId: string, gameStatus: string): void {
     if (gameStatus === 'IN_PROGRESS') {
-      this.router.navigateByUrl('game-play/' + this.player.playerId + '/' + gameId);
+      this.router.navigateByUrl('game-play/' + this.player.id + '/' + gameId);
     }
   }
 }
