@@ -19,8 +19,8 @@ export class GamePlayComponent implements OnDestroy {
   self: Array<GamePlayer>;
   opponentGrid: Array<Array<Grid>> = [];
   selfGrid: Array<Array<Grid>> = [];
-  columns: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  rows: Array<string> = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+  rows: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  columns: Array<string> = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
   salvo: Array<string> = [];
 
   constructor(private route: ActivatedRoute, private dataService: DataService) {
@@ -75,8 +75,8 @@ export class GamePlayComponent implements OnDestroy {
       for (let j = 0; j < arrRow.length; j++) {
         row.push({
           value: arrRow[j],
-          number: this.columns[j],
-          letter: this.rows[i]
+          number: this.rows[j],
+          letter: this.columns[i]
         })
       }
       grid.push(row);

@@ -1,6 +1,6 @@
 .field {
     height: 50px;
-    width: 50px;
+    width: 9%;
     text-align: center;
     line-height: 50px;
 }
@@ -40,4 +40,11 @@
 .missed-field {
     background-color: #006161;
     cursor: no-drop;
+}
+
+@media(max-width: 576px) {
+    .row {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
 }
