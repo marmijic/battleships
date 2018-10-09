@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { DataService } from '../../../service';
 import { Player } from '../../../models/player';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-game-create',
@@ -14,7 +15,7 @@ export class GameCreateComponent {
   opponents: Array<Player>;
   opponentIdValue: string = null;
 
-  constructor(private dataService: DataService) {
+  constructor(private dataService: DataService, private router: Router) {
     this.getData();
   }
 
@@ -52,6 +53,11 @@ export class GameCreateComponent {
     this.dataService.createGame(this.opponentIdValue, body).subscribe(
       response => {
         console.log(response)
+        if (response.status === 201) {
+          const gameId = response.body.game_id;
+          const startingId = response.body.starting;
+          this.router.navigateByUrl('game-play/' + startingId + '/' + gameId);
+        }
       },
       error => {
         console.warn(error);

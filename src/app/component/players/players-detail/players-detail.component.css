@@ -1,19 +1,33 @@
 .join-to-game {
     cursor: pointer;
-    margin-left: 5px;
 }
 
-.fa-check-circle {
+.join-to-game:hover {
+    color: #310c0c;
+    text-decoration: underline;
+}
+
+.game-status {
+    margin-left: 10px;
+}
+
+td.won .fa,
+td.won .game-status {
     color: #4ebc29;
 }
 
-.fa-times-circle {
+td.lost .fa,
+td.lost .game-status .fa-times-circle {
     color: #e02306;
+}
+
+td.in-progress .fa,
+td.in-progress .game-status {
+    color: #3e1971;
 }
 
 .fa-spinner {
     -webkit-animation: rotation 2s infinite linear;
-    color: #3e1971;
 }
 
 @-webkit-keyframes rotation {
