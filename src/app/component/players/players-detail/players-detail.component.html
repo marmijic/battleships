@@ -11,8 +11,8 @@
     <tbody>
         <tr *ngFor="let game of games; let i = index">
             <th>{{ i + 1 }}</th>
-            <td>Mario</td>
-            <td>{{ game.opponentName }}</td>
+            <td>{{ player.name }} <br> {{ player.email }}</td>
+            <td>{{ game.opponentName }} <br> {{ game.opponentEmail }}</td>
             <td>{{ game.game_id }}</td>
             <td>
                 <i class="fa" aria-hidden="true" [ngClass]="{'fa-spinner': game.status === 'IN_PROGRESS','fa-check-circle': game.status === 'WON', 'fa-times-circle': game.status === 'LOST'}"></i>
