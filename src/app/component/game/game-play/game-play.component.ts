@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../../../service';
@@ -11,19 +11,28 @@ import { Salvo } from 'src/app/models/salvo';
   templateUrl: './game-play.component.html',
   styleUrls: ['./game-play.component.css']
 })
-export class GamePlayComponent implements OnDestroy {
+export class GamePlayComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   playerId: string;
   responseMessage: string;
   gameId: string;
-  opponent: Array<GamePlayer>;
-  self: Array<GamePlayer>;
+  opponent: GamePlayer;
+  self: GamePlayer;
+  opponentRemainingShips: number = 10;
+  selfRemainingShips: number = 10;
   opponentGrid: Array<Array<Grid>> = [];
   selfGrid: Array<Array<Grid>> = [];
   rows: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   columns: Array<string> = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+  shots: Salvo = {
+    salvo: []
+  };
+  shotCounter: number = 0;
 
   constructor(private router: Router, private route: ActivatedRoute, private dataService: DataService) {
+  }
+
+  ngOnInit() {
     this.subscriptions.push(this.route.params.subscribe(params => {
       this.playerId = params.playerId;
       this.gameId = params.gameId;
@@ -40,16 +49,15 @@ export class GamePlayComponent implements OnDestroy {
   getData(): void {
     this.dataService.gameStatus(this.playerId, this.gameId).subscribe(
       response => {
-        console.log(response)
         const playerTurnId = response.body.game.player_turn;
         const checkWin: string = response.body.game.won;
         if (this.playerId === playerTurnId) {
           this.opponent = response.body.opponent;
           this.self = response.body.self;
-          this.opponentGrid = this.setGrid(response.body.opponent.board);
-          console.log(this.opponentGrid)
-          this.selfGrid = this.setGrid(response.body.self.board);
-          console.log(this.selfGrid)
+          this.opponentRemainingShips = this.opponent.remaining_ships;
+          this.selfRemainingShips = this.self.remaining_ships;
+          this.opponentGrid = this.setGrid(this.opponent.board);
+          this.selfGrid = this.setGrid(this.self.board);
         }
         else if (this.playerId !== playerTurnId && !checkWin) {
           this.responseMessage = "It's not your turn, the player " + playerTurnId + " now play!";
@@ -65,28 +73,27 @@ export class GamePlayComponent implements OnDestroy {
   }
 
   shot(number: string, letter: string) {
-    // this.salvo.salvo.push(number + 'x' + letter)
-    let salvo: Salvo = {
-      salvo: []
-    };
-    salvo.salvo.push(number + 'x' + letter);
-    this.dataService.gameShot(this.playerId, this.gameId, salvo).subscribe(
-      response => {
-        console.log(response);
-        if (response.status === 200) {
-          // const playerTurnId: string = response.body.game.player_turn;
-          // this.router.navigateByUrl('game-play/' + playerTurnId + '/' + this.gameId)
+    this.shots.salvo.push(number + 'x' + letter);
+    this.shotCounter++;
+    console.log(this.selfRemainingShips - 1)
+    if (this.selfRemainingShips === this.shotCounter) {
+      this.dataService.gameShot(this.playerId, this.gameId, this.shots).subscribe(
+        response => {
+          console.log(response);
+          if (response.status === 200) {
+            const playerTurnId: string = response.body.game.player_turn;
+            this.router.navigateByUrl('game-play/' + playerTurnId + '/' + this.gameId)
+          }
+        },
+        error => {
+          console.warn(error);
         }
-      },
-      error => {
-        console.warn(error);
-      }
-    )
+      )
+    }
   }
 
   setGrid(arr: Array<string>): Array<Array<Grid>> {
     let grid: Array<Array<Grid>> = [];
-    console.log(arr)
     for (let i = 0; i < arr.length; i++) {
       let row: Array<Grid> = [];
       let arrRow: Array<string> = Array.from(arr[i]);

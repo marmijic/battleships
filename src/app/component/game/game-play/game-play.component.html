@@ -1,6 +1,7 @@
 <div class="row" *ngIf="selfGrid.length > 0 && opponentGrid.length > 0; else infoText">
     <div class="col-12 col-lg-6">
         <h1>Self</h1>
+        <p>Ships status {{ selfRemainingShips }} / 10</p>
         <div class="row">
             <div class="field"></div>
             <div class="field" *ngFor="let number of columns">
@@ -16,6 +17,8 @@
     </div>
     <div class="col-12 col-lg-6">
         <h1>Opponent</h1>
+        <p>Ships status {{ opponentRemainingShips }} / 10</p>
+        <p>Number of shots {{ shotCounter }} / {{ selfRemainingShips }}</p>
         <div class="row">
             <div class="field"></div>
             <div class="field" *ngFor="let number of columns">
