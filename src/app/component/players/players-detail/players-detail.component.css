@@ -1,0 +1,26 @@
+.join-to-game {
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.fa-check-circle {
+    color: #4ebc29;
+}
+
+.fa-times-circle {
+    color: #e02306;
+}
+
+.fa-spinner {
+    -webkit-animation: rotation 2s infinite linear;
+    color: #3e1971;
+}
+
+@-webkit-keyframes rotation {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(359deg);
+    }
+}
