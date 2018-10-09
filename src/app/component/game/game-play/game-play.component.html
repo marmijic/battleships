@@ -9,7 +9,8 @@
         </div>
         <div class="row letter-row" *ngFor="let row of selfGrid; let i = index">
             <div class="field">{{ rows[i] }}</div>
-            <div class="field field-border" *ngFor="let column of row" [ngClass]="{'empty-field': column.value === '.','ship-field': column.value === '#','missed-field': column.value === '0','shot-field': column.value === 'X'}">
+            <div class="field field-border" *ngFor="let column of row" [ngClass]="{'empty-field': column.value === '.','ship-field': column.value === '#','missed-field': column.value === 'O','shot-field': column.value === 'X'}">
+                {{column.number}} {{ column.letter }}
             </div>
         </div>
     </div>
@@ -23,7 +24,8 @@
         </div>
         <div class="row letter-row opponent" *ngFor="let row of opponentGrid; let i = index">
             <div class="field">{{ rows[i] }}</div>
-            <div class="field field-border" *ngFor="let column of row" (click)="shot(column.number, column.letter)" [ngClass]="{'empty-field': column.value === '.','ship-field': column.value === '#','missed-field': column.value === '0','shot-field': column.value === 'X'}">
+            <div class="field field-border" *ngFor="let column of row; let j = index" (click)="shot(column.number - 1, column.letter)" [ngClass]="{'empty-field': column.value === '.','ship-field': column.value === '#','missed-field': column.value === 'O','shot-field': column.value === 'X'}">
+                {{column.number}} {{ column.letter }}
             </div>
         </div>
     </div>
