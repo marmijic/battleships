@@ -1,4 +1,4 @@
-export class Game {
+export class GameDetail {
     game_id: string;
     opponent_id: string;
     status: string;

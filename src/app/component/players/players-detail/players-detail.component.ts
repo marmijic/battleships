@@ -1,9 +1,8 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../../../service';
-import { Game } from '../../../models/game';
-import { map } from 'rxjs/operators';
+import { GameDetail } from '../../../models/game-detail';
 import { Player } from '../../../models/player';
 
 @Component({
@@ -13,7 +12,7 @@ import { Player } from '../../../models/player';
 })
 export class PlayersDetailComponent implements OnDestroy {
   private subscriptions: Subscription[] = [];
-  games: Array<Game>;
+  games: Array<GameDetail>;
   responseMessage: string = '';
   player: Player = {
     name: '',

@@ -9,7 +9,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let player of players; let i = index" [routerLink]="['/players/detail', player.id]" routerLinkActive="router-link-active">
+                <tr *ngFor="let player of players; let i = index" [routerLink]="['/players/detail', player.id]">
                     <th scope="row">{{ i + 1 }}</th>
                     <td>{{ player.name }}</td>
                     <td>{{ player.email }}</td>

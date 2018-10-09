@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from '../../../service';
 import { Grid } from '../../../models/grid';
+import { GamePlayer } from '../../../models/game-player';
 
 @Component({
   selector: 'app-game-play',
@@ -12,14 +13,15 @@ import { Grid } from '../../../models/grid';
 export class GamePlayComponent implements OnDestroy {
   private subscriptions: Subscription[] = [];
   playerId: string;
+  responseMessage: string;
   gameId: string;
-  opponent: Array<any>;
+  opponent: Array<GamePlayer>;
+  self: Array<GamePlayer>;
   opponentGrid: Array<Array<Grid>> = [];
-  self: Array<any>;
   selfGrid: Array<Array<Grid>> = [];
   columns: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   rows: Array<string> = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
-  salvo: Array<any> = [];
+  salvo: Array<string> = [];
 
   constructor(private route: ActivatedRoute, private dataService: DataService) {
     this.subscriptions.push(this.route.params.subscribe(params => {
@@ -27,10 +29,16 @@ export class GamePlayComponent implements OnDestroy {
       this.gameId = params.gameId;
       this.dataService.gameStatus(this.playerId, this.gameId).subscribe(
         response => {
-          this.opponent = response.body.opponent;
-          this.self = response.body.self;
-          this.opponentGrid = this.setGrid(response.body.opponent.board);
-          this.selfGrid = this.setGrid(response.body.self.board);
+          const playerTurnId = response.body.game.player_turn
+          if (this.playerId === playerTurnId) {
+            this.opponent = response.body.opponent;
+            this.self = response.body.self;
+            this.opponentGrid = this.setGrid(response.body.opponent.board);
+            this.selfGrid = this.setGrid(response.body.self.board);
+          }
+          else {
+            this.responseMessage = "<h3>It's not your turn, the player " + playerTurnId + " now play!</h3>";
+          }
         },
         error => {
           console.warn(error)
