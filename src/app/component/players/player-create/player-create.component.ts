@@ -17,7 +17,6 @@ export class PlayerCreateComponent {
   }
 
   saveData() {
-    console.log(this.createPlayerForm)
     let body: Player = {
       name: this.createPlayerForm.value.nameInput,
       email: this.createPlayerForm.value.emailInput
