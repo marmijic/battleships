@@ -1,28 +1,32 @@
-<table class="table text-center" *ngIf="games; else infoText">
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Challenger</th>
-            <th>Opponent</th>
-            <th>Game id</th>
-            <th>Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let game of games; let i = index">
-            <th>{{ i + 1 }}</th>
-            <td>{{ player.name }} <br> {{ player.email }}</td>
-            <td>{{ game.opponentName }} <br> {{ game.opponentEmail }}</td>
-            <td>{{ game.game_id }}</td>
-            <td [ngClass]="{'in-progress': game.status === 'IN_PROGRESS','won': game.status === 'WON', 'lost': game.status === 'LOST'}">
-                <i class="fa" aria-hidden="true" [ngClass]="{'fa-spinner': game.status === 'IN_PROGRESS','fa-check-circle': game.status === 'WON', 'fa-times-circle': game.status === 'LOST'}"></i>
-                <span class="game-status">{{ game.status }}</span>
-                <br>
-                <span class="join-to-game" *ngIf="game.status === 'IN_PROGRESS'" (click)="navigateTo(game.game_id, game.status)">JOIN</span>
-            </td>
-        </tr>
-    </tbody>
-</table>
+<div class="row">
+    <div class="col-12 col-md-8 offset-md-2">
+        <table class="table table-responsive text-center" *ngIf="games; else infoText">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Challenger</th>
+                    <th>Opponent</th>
+                    <th>Game id</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let game of games; let i = index">
+                    <th>{{ i + 1 }}</th>
+                    <td>{{ player.name }} <br> {{ player.email }}</td>
+                    <td>{{ game.opponentName }} <br> {{ game.opponentEmail }}</td>
+                    <td>{{ game.game_id }}</td>
+                    <td [ngClass]="{'in-progress': game.status === 'IN_PROGRESS','won': game.status === 'WON', 'lost': game.status === 'LOST'}">
+                        <i class="fa" aria-hidden="true" [ngClass]="{'fa-spinner': game.status === 'IN_PROGRESS','fa-check-circle': game.status === 'WON', 'fa-times-circle': game.status === 'LOST'}"></i>
+                        <span class="game-status">{{ game.status }}</span>
+                        <br>
+                        <span class="join" *ngIf="game.status === 'IN_PROGRESS'" (click)="navigateTo(game.game_id, game.status)">JOIN</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
 <ng-template #infoText>
     <app-error [errorMessage]="responseMessage"></app-error>

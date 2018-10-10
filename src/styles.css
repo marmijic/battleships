@@ -23,3 +23,12 @@ button:last-of-type {
     width: 100%;
     margin: 0 auto;
 }
+
+.join {
+    cursor: pointer;
+}
+
+.join:hover {
+    color: #310c0c;
+    text-decoration: underline;
+}
