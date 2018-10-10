@@ -36,6 +36,10 @@ export class DataService {
         return this.putData('player/' + playerId + '/game/' + gameId, salvo)
     }
 
+    turnAutopilot(playerId: string, gameId: string){
+        return this.putData('player/' + playerId + '/game/' + gameId + '/autopilot')
+    }
+
     getData(params: string): Observable<any> {
         const url: string = this.getUrl() + params;
         const options = this.getOptions();
@@ -48,7 +52,7 @@ export class DataService {
         return this.http.post(url, body, options);
     }
 
-    putData(params: string, body: any): Observable<any> {
+    putData(params: string, body?: any): Observable<any> {
         console.log(params, body)
         const url: string = this.getUrl() + params;
         const options = this.getOptions();

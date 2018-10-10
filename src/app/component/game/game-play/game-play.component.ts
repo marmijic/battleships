@@ -110,6 +110,17 @@ export class GamePlayComponent implements OnInit, OnDestroy {
     }
   }
 
+  autopilot(){
+    this.dataService.turnAutopilot(this.playerId, this.gameId).subscribe(
+      response => {
+        console.log(response)
+      },
+      error => {
+        console.log(error)
+      }
+    )
+  }
+
   private setGrid(arr: Array<string>, flag: boolean): Array<Array<Grid>> {
     let grid: Array<Array<Grid>> = [];
     for (let i = 0; i < arr.length; i++) {

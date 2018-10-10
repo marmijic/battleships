@@ -2,6 +2,10 @@
     min-height: 150px;
 }
 
+.buttons {
+    margin-bottom: 35px;
+}
+
 .field {
     height: 50px;
     width: 9%;

@@ -29,3 +29,11 @@ td.in-progress .game-status {
         -webkit-transform: rotate(360deg);
     }
 }
+
+@media(min-width:768px) {
+    .table {
+        margin: 0 auto;
+        width: auto;
+        display: table;
+    }
+}
