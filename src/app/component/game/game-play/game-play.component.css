@@ -1,3 +1,7 @@
+.wrapper-intro {
+    min-height: 150px;
+}
+
 .field {
     height: 50px;
     width: 9%;

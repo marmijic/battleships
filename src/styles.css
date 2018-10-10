@@ -1,5 +1,7 @@
 input,
-select {
+select,
+h1,
+p {
     width: 100%;
 }
 

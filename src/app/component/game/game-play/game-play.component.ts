@@ -78,14 +78,14 @@ export class GamePlayComponent implements OnInit, OnDestroy {
     )
   }
 
-  shot(number: string, letter: string) {
+  shot(number: string, letter: string): void {
     this.shots.salvo.push(number + 'x' + letter);
     this.shotCounter++;
     if (this.selfRemainingShips === this.shotCounter) {
       this.dataService.gameShot(this.playerId, this.gameId, this.shots).subscribe(
         response => {
-          console.log(response);
           if (response.status === 200) {
+            this.showDialog = true;
             let result: Array<SalvoResult> = [];
             Object.keys(response.body.salvo).forEach(value => {
               result.push({
@@ -93,13 +93,11 @@ export class GamePlayComponent implements OnInit, OnDestroy {
                 result: response.body.salvo[value]
               })
             })
-            this.showDialog = true;
             this.shotResult = {
               playerTurn: response.body.game.player_turn,
               gameId: this.gameId,
               salvo: result
             };
-            console.log(this.shotResult )
           }
         },
         error => {
