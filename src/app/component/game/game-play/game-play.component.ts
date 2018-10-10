@@ -106,7 +106,7 @@ export class GamePlayComponent implements OnInit, OnDestroy {
       )
     }
   }
-
+  
   private setGrid(arr: Array<string>): Array<Array<Grid>> {
     let grid: Array<Array<Grid>> = [];
     for (let i = 0; i < arr.length; i++) {

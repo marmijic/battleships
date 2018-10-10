@@ -7,6 +7,9 @@
     width: 9%;
     text-align: center;
     line-height: 50px;
+    margin: 0;
+    border: 0;
+    background-color: #ffffff;
 }
 
 .field-border {
@@ -43,6 +46,11 @@
 
 .missed-field {
     background-color: #006161;
+    cursor: no-drop;
+}
+
+.user-shot {
+    background: powderblue;
     cursor: no-drop;
 }
 
