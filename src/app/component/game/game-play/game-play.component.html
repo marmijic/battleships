@@ -27,7 +27,7 @@
         </div>
         <div class="row letter-row opponent" *ngFor="let row of opponentGrid; let i = index">
             <div class="field">{{ rows[i] }}</div>
-            <div class="field field-border" *ngFor="let column of row; let j = index" (click)="shot(column.number - 1, column.letter)" [ngClass]="{'empty-field': column.value === '.','ship-field': column.value === '#','missed-field': column.value === 'O','shot-field': column.value === 'X'}">
+            <div class="field field-border" *ngFor="let column of row; let j = index" [attr.disabled]="column.value !== '.'" (click)="shot(column.number - 1, column.letter)" [ngClass]="{'empty-field': column.value === '.','ship-field': column.value === '#','missed-field': column.value === 'O','shot-field': column.value === 'X'}">
                 {{column.number}} {{ column.letter }}
             </div>
         </div>
@@ -59,7 +59,7 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" [routerLink]="['/game-play/' + shotResult.player_turn + '/' + shotResult.game_id]">Next player</button>
+                <button type="button" class="btn btn-secondary" [routerLink]="['/game-play/' + shotResult.playerTurn + '/' + shotResult.gameId]">Next player</button>
             </div>
         </div>
     </div>

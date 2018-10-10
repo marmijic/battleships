@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../../../service';
 import { Grid } from '../../../models/grid';
 import { GamePlayer } from '../../../models/game-player';
-import { Salvo } from 'src/app/models/salvo';
+import { Salvo, Shot, SalvoResult } from 'src/app/models/shot';
 
 @Component({
   selector: 'app-game-play',
@@ -29,7 +29,7 @@ export class GamePlayComponent implements OnInit, OnDestroy {
     salvo: []
   };
   shotCounter: number = 0;
-  shotResult: any;
+  shotResult: Shot;
 
   constructor(private router: Router, private route: ActivatedRoute, private dataService: DataService) {
     this.router.routeReuseStrategy.shouldReuseRoute = function () {
@@ -86,20 +86,20 @@ export class GamePlayComponent implements OnInit, OnDestroy {
         response => {
           console.log(response);
           if (response.status === 200) {
-            let shotResult: Array<any> = [];
-            let salvo = response.body.salvo;
-            Object.keys(salvo).forEach(value => {
-              shotResult.push({
+            let result: Array<SalvoResult> = [];
+            Object.keys(response.body.salvo).forEach(value => {
+              result.push({
                 field: value,
-                result: salvo[value]
+                result: response.body.salvo[value]
               })
             })
             this.showDialog = true;
             this.shotResult = {
-              player_turn: response.body.game.player_turn,
-              game_id: this.gameId,
-              salvo: shotResult
+              playerTurn: response.body.game.player_turn,
+              gameId: this.gameId,
+              salvo: result
             };
+            console.log(this.shotResult )
           }
         },
         error => {
@@ -109,7 +109,7 @@ export class GamePlayComponent implements OnInit, OnDestroy {
     }
   }
 
-  setGrid(arr: Array<string>): Array<Array<Grid>> {
+  private setGrid(arr: Array<string>): Array<Array<Grid>> {
     let grid: Array<Array<Grid>> = [];
     for (let i = 0; i < arr.length; i++) {
       let row: Array<Grid> = [];
