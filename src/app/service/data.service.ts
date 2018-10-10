@@ -12,6 +12,10 @@ export class DataService {
         return this.getData('player/list')
     }
 
+    playerProfile(playerId: string): Observable<any> {
+        return this.getData('player/' + playerId);
+    }
+
     playerDetail(playerId: string): Observable<any> {
         return this.getData('player/' + playerId + '/game/list')
     }

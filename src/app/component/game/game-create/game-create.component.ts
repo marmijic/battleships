@@ -1,7 +1,7 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
 import { DataService } from '../../../service';
 import { Player } from '../../../models/player';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-game-create',
@@ -9,50 +9,58 @@ import { Player } from '../../../models/player';
   styleUrls: ['./game-create.component.css']
 })
 export class GameCreateComponent {
-  createGameForm: FormGroup;
-  challengers: Array<any>;
-  opponents: Array<any>;
-  challengerId: string;
-  opponentId: string;
+  players: Array<Player>;
+  challengers: Array<Player>;
+  challengerIdValue: string = null;
+  opponents: Array<Player>;
+  opponentIdValue: string = null;
 
-  constructor(private formBuilder: FormBuilder, private dataService: DataService) {
+  constructor(private dataService: DataService, private router: Router) {
     this.getData();
   }
 
   getData() {
     this.dataService.playersList().subscribe(
       response => {
-        this.challengers = response.body.players;
-        this.opponents = response.body.players;
+        this.players = response.body.players;
+        this.setPlayers();
       },
       error => {
-        console.log(error)
+        console.warn(error)
       }
     )
   }
 
-  onChallengerChange(challengerId) {
-    this.challengerId = challengerId;
-    this.opponents = this.opponents.filter(value => value.id !== challengerId);
+  setPlayers(): void {
+    this.challengers = this.players;
+    this.challengerIdValue = null;
+    this.opponents = this.players;
+    this.opponentIdValue = null;
   }
 
-  onOpponentChange(opponentId) {
-    this.opponentId = opponentId;
-    this.challengers = this.challengers.filter(value => value.id !== opponentId);
+  onChallengerChange(): void {
+    this.opponents = this.players.filter(value => value.id !== this.challengerIdValue);
   }
 
-  createGame() {
-    console.log('challengerId', this.challengerId)
-    console.log('opponentId', this.opponentId)
+  onOpponentChange(): void {
+    this.challengers = this.players.filter(value => value.id !== this.opponentIdValue);
+  }
+
+  createGame(): void {
     let body: any = {
-      player_id: this.challengerId,
+      player_id: this.challengerIdValue,
     };
-    this.dataService.createGame(this.opponentId, body).subscribe(
+    this.dataService.createGame(this.opponentIdValue, body).subscribe(
       response => {
         console.log(response)
+        if (response.status === 201) {
+          const gameId = response.body.game_id;
+          const startingId = response.body.starting;
+          this.router.navigateByUrl('game-play/' + startingId + '/' + gameId);
+        }
       },
       error => {
-        console.log(error);
+        console.warn(error);
       }
     );
   }

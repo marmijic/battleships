@@ -1,6 +1,7 @@
-<div class="row">
-    <div class="col-12">
+<div class="row" *ngIf="selfGrid.length > 0 && opponentGrid.length > 0; else infoText">
+    <div class="col-12 col-lg-6">
         <h1>Self</h1>
+        <p>Ships status {{ selfRemainingShips }} / 10</p>
         <div class="row">
             <div class="field"></div>
             <div class="field" *ngFor="let number of columns">
@@ -9,22 +10,61 @@
         </div>
         <div class="row letter-row" *ngFor="let row of selfGrid; let i = index">
             <div class="field">{{ rows[i] }}</div>
-            <div class="field field-border" *ngFor="let column of row" [ngClass]="{'empty-field': column.value === '.','ship-field': column.value === '#','missed-field': column.value === '0','shot-field': column.value === 'X'}">
+            <div class="field field-border" *ngFor="let column of row" [ngClass]="{'empty-field': column.value === '.','ship-field': column.value === '#','missed-field': column.value === 'O','shot-field': column.value === 'X'}">
+                {{column.number}} {{ column.letter }}
             </div>
         </div>
     </div>
-    <div class="col-12">
+    <div class="col-12 col-lg-6">
         <h1>Opponent</h1>
+        <p>Ships status {{ opponentRemainingShips }} / 10</p>
+        <p>Number of shots {{ shotCounter }} / {{ selfRemainingShips }}</p>
         <div class="row">
             <div class="field"></div>
             <div class="field" *ngFor="let number of columns">
                 {{ number }}
             </div>
         </div>
-        <div class="row letter-row" *ngFor="let row of opponentGrid; let i = index">
+        <div class="row letter-row opponent" *ngFor="let row of opponentGrid; let i = index">
             <div class="field">{{ rows[i] }}</div>
-            <div class="field field-border" *ngFor="let column of row" (click)="shot(column.number, column.letter)">
+            <div class="field field-border" *ngFor="let column of row; let j = index" [attr.disabled]="column.value !== '.'" (click)="shot(column.number - 1, column.letter)" [ngClass]="{'empty-field': column.value === '.','ship-field': column.value === '#','missed-field': column.value === 'O','shot-field': column.value === 'X'}">
+                {{column.number}} {{ column.letter }}
             </div>
         </div>
     </div>
 </div>
+
+<div class="modal" tabindex="-1" role="dialog" *ngIf="showDialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Shot result</h5>
+            </div>
+            <div class="modal-body">
+                <table class="table text-center">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>field</th>
+                            <th>result</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let shot of shotResult.salvo; let i = index">
+                            <th>{{ i + 1 }}</th>
+                            <td>{{ shot.field }}</td>
+                            <td>{{ shot.result }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" [routerLink]="['/game-play/' + shotResult.playerTurn + '/' + shotResult.gameId]">Next player</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #infoText>
+    <app-error [errorMessage]="responseMessage"></app-error>
+</ng-template>

@@ -9,7 +9,7 @@
                     <input formControlName="emailInput" type="email" placeholder="Email">
                 </div>
                 <div class="col-12 text-right">
-                    <button class="btn btn-warning" (click)="setForm()">Reset</button>
+                    <button class="btn btn-warning" type="reset" (click)="setForm()">Reset</button>
                     <button class="btn btn-primary" type="submit" name="submit" [disabled]="createPlayerForm.invalid">Save</button>
                 </div>
                 <app-error [errorMessage]="responseMessage" *ngIf="responseMessage"></app-error>

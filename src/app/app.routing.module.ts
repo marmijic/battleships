@@ -6,7 +6,8 @@ import {
     PlayersDetailComponent,
     PlayerCreateComponent,
     GameCreateComponent,
-    GamePlayComponent
+    GamePlayComponent,
+    NotFoundComponent
 } from "./component";
 
 const routes: Routes = [
@@ -15,7 +16,8 @@ const routes: Routes = [
     { path: "player-create", component: PlayerCreateComponent },
     { path: "players/detail/:id", component: PlayersDetailComponent },
     { path: "game-create", component: GameCreateComponent },
-    { path: "game-play/:playerId/:gameId", component: GamePlayComponent }
+    { path: "game-play/:playerId/:gameId", component: GamePlayComponent },
+    { path: "**", component: NotFoundComponent }
 ];
 
 @NgModule({

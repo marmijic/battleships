@@ -1,10 +1,10 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" [routerLink]="['/']">Battleships</a>
     <button class="navbar-toggler" type="button" (click)="collapse()"><span class="navbar-toggler-icon"></span></button>
-    <div class="collapse navbar-collapse" #navbarContent>
+    <div class="navbar-collapse" *ngIf="showNavbar">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item" *ngFor="let navItem of navItems" [ngClass]="{'active':  '/' + navItem.link === getActive()}">
-                <a class="nav-link" [routerLink]="[navItem.link]">{{ navItem.name }}</a>
+                <a class="nav-link" [routerLink]="[navItem.link]" (click)="navClick()">{{ navItem.name }}</a>
             </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
