@@ -1,18 +1,20 @@
 <div class="row">
-    <div class="col-12">
-        <table class="table" *ngIf="players; else infoText">
+    <div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
+        <table class="table table-responsive" *ngIf="players; else infoText">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Email</th>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Player details</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let player of players; let i = index" [routerLink]="['/players/detail', player.id]">
-                    <th scope="row">{{ i + 1 }}</th>
+                <tr *ngFor="let player of players; let i = index">
+                    <th>{{ i + 1 }}</th>
                     <td>{{ player.name }}</td>
                     <td>{{ player.email }}</td>
+                    <td class="join" [routerLink]="['/players/detail', player.id]">Check details</td>
                 </tr>
             </tbody>
         </table>

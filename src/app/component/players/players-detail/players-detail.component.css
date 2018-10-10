@@ -1,12 +1,3 @@
-.join-to-game {
-    cursor: pointer;
-}
-
-.join-to-game:hover {
-    color: #310c0c;
-    text-decoration: underline;
-}
-
 .game-status {
     margin-left: 10px;
 }
@@ -36,5 +27,13 @@ td.in-progress .game-status {
     }
     to {
         -webkit-transform: rotate(360deg);
+    }
+}
+
+@media(min-width:768px) {
+    .table {
+        margin: 0 auto;
+        width: auto;
+        display: table;
     }
 }

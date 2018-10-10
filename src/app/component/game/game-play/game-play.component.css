@@ -1,8 +1,19 @@
+.wrapper-intro {
+    min-height: 150px;
+}
+
+.buttons {
+    margin-bottom: 35px;
+}
+
 .field {
     height: 50px;
     width: 9%;
     text-align: center;
     line-height: 50px;
+    margin: 0;
+    border: 0;
+    background-color: #ffffff;
 }
 
 .field-border {
@@ -42,8 +53,12 @@
     cursor: no-drop;
 }
 
+.user-shot {
+    background: powderblue;
+    cursor: no-drop;
+}
+
 .modal {
-    background-color: rgba(0, 0, 0, .35);
     display: block;
 }
 
@@ -51,17 +66,5 @@
     .row {
         margin-left: 0px;
         margin-right: 0px;
-    }
-}
-
-@media (min-width: 576px) {
-    .modal-dialog {
-        max-width: 991px;
-        position: absolute;
-        top: 50%;
-        -webkit-transform: translateY(-50%);
-        transform: translateY(-50%);
-        width: 50%;
-        left: 25%;
     }
 }

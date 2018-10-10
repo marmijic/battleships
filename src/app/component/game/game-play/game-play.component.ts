@@ -24,12 +24,13 @@ export class GamePlayComponent implements OnInit, OnDestroy {
   selfGrid: Array<Array<Grid>> = [];
   rows: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   columns: Array<string> = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
-  showDialog: boolean = false;
+  showShotDialog: boolean = false;
   shots: Salvo = {
     salvo: []
   };
   shotCounter: number = 0;
   shotResult: Shot;
+  emptyFields: number = 0;
 
   constructor(private router: Router, private route: ActivatedRoute, private dataService: DataService) {
     this.router.routeReuseStrategy.shouldReuseRoute = function () {
@@ -62,8 +63,8 @@ export class GamePlayComponent implements OnInit, OnDestroy {
           this.self = response.body.self;
           this.opponentRemainingShips = this.opponent.remaining_ships;
           this.selfRemainingShips = this.self.remaining_ships;
-          this.opponentGrid = this.setGrid(this.opponent.board);
-          this.selfGrid = this.setGrid(this.self.board);
+          this.opponentGrid = this.setGrid(this.opponent.board, true);
+          this.selfGrid = this.setGrid(this.self.board, false);
         }
         else if (this.playerId !== playerTurnId && !checkWin) {
           this.responseMessage = "It's not your turn, the player " + playerTurnId + " now play!";
@@ -78,14 +79,16 @@ export class GamePlayComponent implements OnInit, OnDestroy {
     )
   }
 
-  shot(number: string, letter: string) {
+  shot(number: string, letter: string): void {
     this.shots.salvo.push(number + 'x' + letter);
     this.shotCounter++;
-    if (this.selfRemainingShips === this.shotCounter) {
+    console.log(this.emptyFields)
+    console.log(this.shotCounter)
+    if (this.selfRemainingShips === this.shotCounter || this.emptyFields === this.shotCounter) {
       this.dataService.gameShot(this.playerId, this.gameId, this.shots).subscribe(
         response => {
-          console.log(response);
           if (response.status === 200) {
+            this.showShotDialog = true;
             let result: Array<SalvoResult> = [];
             Object.keys(response.body.salvo).forEach(value => {
               result.push({
@@ -93,13 +96,11 @@ export class GamePlayComponent implements OnInit, OnDestroy {
                 result: response.body.salvo[value]
               })
             })
-            this.showDialog = true;
             this.shotResult = {
               playerTurn: response.body.game.player_turn,
               gameId: this.gameId,
               salvo: result
             };
-            console.log(this.shotResult )
           }
         },
         error => {
@@ -109,7 +110,18 @@ export class GamePlayComponent implements OnInit, OnDestroy {
     }
   }
 
-  private setGrid(arr: Array<string>): Array<Array<Grid>> {
+  autopilot(){
+    this.dataService.turnAutopilot(this.playerId, this.gameId).subscribe(
+      response => {
+        console.log(response)
+      },
+      error => {
+        console.log(error)
+      }
+    )
+  }
+
+  private setGrid(arr: Array<string>, flag: boolean): Array<Array<Grid>> {
     let grid: Array<Array<Grid>> = [];
     for (let i = 0; i < arr.length; i++) {
       let row: Array<Grid> = [];
@@ -120,6 +132,8 @@ export class GamePlayComponent implements OnInit, OnDestroy {
           number: this.rows[i],
           letter: this.columns[j]
         })
+        if (arrRow[j] === '.' && flag)
+          this.emptyFields++;
       }
       grid.push(row);
     }

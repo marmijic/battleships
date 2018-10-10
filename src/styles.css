@@ -1,5 +1,7 @@
 input,
-select {
+select,
+h1,
+p {
     width: 100%;
 }
 
@@ -22,4 +24,29 @@ button:last-of-type {
     display: block;
     width: 100%;
     margin: 0 auto;
+}
+
+.join {
+    cursor: pointer;
+}
+
+.join:hover {
+    color: #310c0c;
+    text-decoration: underline;
+}
+
+.modal {
+    background-color: rgba(0, 0, 0, .35);
+}
+
+@media (min-width: 576px) {
+    .modal-dialog {
+        max-width: 991px;
+        position: absolute;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        transform: translateY(-50%);
+        width: 50%;
+        left: 25%;
+    }
 }
