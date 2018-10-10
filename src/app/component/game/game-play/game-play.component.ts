@@ -24,13 +24,19 @@ export class GamePlayComponent implements OnInit, OnDestroy {
   selfGrid: Array<Array<Grid>> = [];
   rows: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   columns: Array<string> = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+  showDialog: boolean = false;
   shots: Salvo = {
     salvo: []
   };
   shotCounter: number = 0;
+  shotResult: any;
 
   constructor(private router: Router, private route: ActivatedRoute, private dataService: DataService) {
+    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+      return false;
+    };
   }
+
 
   ngOnInit() {
     this.subscriptions.push(this.route.params.subscribe(params => {
@@ -75,14 +81,25 @@ export class GamePlayComponent implements OnInit, OnDestroy {
   shot(number: string, letter: string) {
     this.shots.salvo.push(number + 'x' + letter);
     this.shotCounter++;
-    console.log(this.selfRemainingShips - 1)
     if (this.selfRemainingShips === this.shotCounter) {
       this.dataService.gameShot(this.playerId, this.gameId, this.shots).subscribe(
         response => {
           console.log(response);
           if (response.status === 200) {
-            const playerTurnId: string = response.body.game.player_turn;
-            this.router.navigateByUrl('game-play/' + playerTurnId + '/' + this.gameId)
+            let shotResult: Array<any> = [];
+            let salvo = response.body.salvo;
+            Object.keys(salvo).forEach(value => {
+              shotResult.push({
+                field: value,
+                result: salvo[value]
+              })
+            })
+            this.showDialog = true;
+            this.shotResult = {
+              player_turn: response.body.game.player_turn,
+              game_id: this.gameId,
+              salvo: shotResult
+            };
           }
         },
         error => {
