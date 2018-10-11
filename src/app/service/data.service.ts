@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { Player } from '../models/player';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { LoaderService } from './loader.service';
+import { MessageService } from './message.service';
 
 
 @Injectable()
 export class DataService {
-    constructor(private http: HttpClient, private loaderService: LoaderService) { }
+    constructor(private http: HttpClient, private loaderService: LoaderService, private messageService: MessageService) { }
 
     playersList(): Observable<any> {
         return this.getData(`player/list`)
@@ -63,16 +64,20 @@ export class DataService {
         this.showLoader();
         const url: string = this.getUrl() + params;
         const options = this.getOptions();
-        return this.http.post(url, body, options).pipe(map(
-            response => {
-                this.hideLoader();
-                return response;
-            },
-            error => {
-                this.hideLoader();
-                return error;
-            }
-        ));
+        return this.http.post(url, body, options).pipe(
+            map(
+                response => {
+                    this.hideLoader();
+                    return response;
+                }),
+            catchError(
+                (error: HttpErrorResponse) => {
+                    this.hideLoader();
+                    this.messageService.add({ name: 'foo', show: true })
+                    console.log(error)
+                    return Observable.throw(error)
+                }
+            ))
     }
 
     putData(params: string, body?: any): Observable<any> {

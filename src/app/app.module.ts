@@ -12,11 +12,16 @@ import {
   PlayerCreateComponent,
   GameCreateComponent,
   GamePlayComponent,
-  NotFoundComponent
+  NotFoundComponent,
+  LoaderComponent,
+  MessageComponent
 } from './component';
-import { DataService } from './service';
+import {
+  DataService,
+  LoaderService,
+  MessageService
+} from './service';
 import { AppRoutingModule } from './app.routing.module';
-import { LoaderComponent } from './component/loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +34,8 @@ import { LoaderComponent } from './component/loader/loader.component';
     GameCreateComponent,
     GamePlayComponent,
     NotFoundComponent,
-    LoaderComponent
+    LoaderComponent,
+    MessageComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +45,9 @@ import { LoaderComponent } from './component/loader/loader.component';
     AppRoutingModule
   ],
   providers: [
-    DataService
+    DataService,
+    LoaderService,
+    MessageService
   ],
   bootstrap: [AppComponent]
 })

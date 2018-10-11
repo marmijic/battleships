@@ -1,0 +1,11 @@
+.message-box {
+    position: absolute;
+    width: 300px;
+    z-index: 1001;
+    background: rgba(255, 50, 50, 0.8);
+    left: calc(50% - 150px);
+    top: 2vh;
+    height: 115px;
+    border-radius: 15px;
+    padding: 25px;
+}

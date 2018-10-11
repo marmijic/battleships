@@ -6,3 +6,5 @@ export * from './players/player-create/player-create.component';
 export * from './game/game-create/game-create.component';
 export * from './game/game-play/game-play.component';
 export * from './not-found/not-found.component';
+export * from './loader/loader.component';
+export * from './message/message.component';
