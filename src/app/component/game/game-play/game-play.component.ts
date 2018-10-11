@@ -56,6 +56,7 @@ export class GamePlayComponent implements OnInit, OnDestroy {
   getData(): void {
     this.dataService.gameStatus(this.playerId, this.gameId).subscribe(
       response => {
+        console.log(response)
         const playerTurnId = response.body.game.player_turn;
         const checkWin: string = response.body.game.won;
         if (this.playerId === playerTurnId) {
@@ -110,13 +111,15 @@ export class GamePlayComponent implements OnInit, OnDestroy {
     }
   }
 
-  autopilot(){
+  autopilot() {
     this.dataService.turnAutopilot(this.playerId, this.gameId).subscribe(
       response => {
         console.log(response)
+        if (response.status === 204)
+          this.getData();
       },
       error => {
-        console.log(error)
+        console.warn(error)
       }
     )
   }

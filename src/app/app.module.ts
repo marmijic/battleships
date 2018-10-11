@@ -17,6 +17,7 @@ import {
 } from './component';
 import { DataService } from './service';
 import { AppRoutingModule } from './app.routing.module';
+import { LoaderComponent } from './component/loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { AppRoutingModule } from './app.routing.module';
     PlayerCreateComponent,
     GameCreateComponent,
     GamePlayComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,

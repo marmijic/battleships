@@ -2,13 +2,13 @@
     <div class="col-10 offset-1 col-sm-6 offset-sm-0">
         <label for="challenger">Select challenger</label>
         <select name="challenger" [(ngModel)]="challengerIdValue" (change)="onChallengerChange()">
-          <option [ngValue]="challenger.id" *ngFor="let challenger of challengers" >{{ challenger.name }}</option>
+          <option [ngValue]="challenger.id" *ngFor="let challenger of challengers" >{{ challenger.name }} ({{ challenger.email }})</option>
         </select>
     </div>
     <div class="col-10 offset-1 col-sm-6 offset-sm-0">
         <label for="opponent">Select opponent</label>
         <select name="opponent" [(ngModel)]="opponentIdValue" (change)="onOpponentChange()">
-          <option [ngValue]="opponent.id" *ngFor="let opponent of opponents" >{{ opponent.name }}</option>
+          <option [ngValue]="opponent.id" *ngFor="let opponent of opponents" >{{ opponent.name }} ({{ opponent.email }})</option>
         </select>
     </div>
     <div class="col-10 offset-1 col-sm-12 offset-sm-0 text-right">

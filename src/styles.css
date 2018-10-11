@@ -39,6 +39,19 @@ button:last-of-type {
     background-color: rgba(0, 0, 0, .35);
 }
 
+.spinner {
+    -webkit-animation: rotation 2s infinite linear;
+}
+
+@-webkit-keyframes rotation {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
 @media (min-width: 576px) {
     .modal-dialog {
         max-width: 991px;

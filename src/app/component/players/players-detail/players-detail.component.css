@@ -8,26 +8,13 @@ td.won .game-status {
 }
 
 td.lost .fa,
-td.lost .game-status .fa-times-circle {
+td.lost .game-status {
     color: #e02306;
 }
 
 td.in-progress .fa,
 td.in-progress .game-status {
     color: #3e1971;
-}
-
-.fa-spinner {
-    -webkit-animation: rotation 2s infinite linear;
-}
-
-@-webkit-keyframes rotation {
-    from {
-        -webkit-transform: rotate(0deg);
-    }
-    to {
-        -webkit-transform: rotate(360deg);
-    }
 }
 
 @media(min-width:768px) {

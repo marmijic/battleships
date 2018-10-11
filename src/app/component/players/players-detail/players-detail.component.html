@@ -17,7 +17,7 @@
                     <td>{{ game.opponentName }} <br> {{ game.opponentEmail }}</td>
                     <td>{{ game.game_id }}</td>
                     <td [ngClass]="{'in-progress': game.status === 'IN_PROGRESS','won': game.status === 'WON', 'lost': game.status === 'LOST'}">
-                        <i class="fa" aria-hidden="true" [ngClass]="{'fa-spinner': game.status === 'IN_PROGRESS','fa-check-circle': game.status === 'WON', 'fa-times-circle': game.status === 'LOST'}"></i>
+                        <i class="fa" aria-hidden="true" [ngClass]="{'fa-spinner spinner': game.status === 'IN_PROGRESS','fa-check-circle': game.status === 'WON', 'fa-times-circle': game.status === 'LOST'}"></i>
                         <span class="game-status">{{ game.status }}</span>
                         <br>
                         <span class="join" *ngIf="game.status === 'IN_PROGRESS'" (click)="navigateTo(game.game_id, game.status)">JOIN</span>
