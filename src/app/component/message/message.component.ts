@@ -11,9 +11,7 @@ export class MessageComponent implements OnInit {
   show: boolean = false;
   name: string = null;
 
-  constructor(private messageService: MessageService) {
-    this.messageService.hide()
-  }
+  constructor(private messageService: MessageService) {}
 
   ngOnInit() {
     this.messageService.messageState.subscribe(
@@ -23,5 +21,4 @@ export class MessageComponent implements OnInit {
       }
     )
   }
-
 }

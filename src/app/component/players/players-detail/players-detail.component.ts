@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DataService } from '../../../service';
+import { DataService, MessageService } from '../../../service';
 import { GameDetail } from '../../../models/game-detail';
 import { Player } from '../../../models/player';
 
@@ -13,14 +13,13 @@ import { Player } from '../../../models/player';
 export class PlayersDetailComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   games: Array<GameDetail>;
-  responseMessage: string = '';
   player: Player = {
     name: '',
     email: '',
     id: ''
   };
 
-  constructor(private router: Router, private route: ActivatedRoute, private dataService: DataService) {
+  constructor(private router: Router, private route: ActivatedRoute, private dataService: DataService, private messageService: MessageService) {
   }
 
   ngOnInit() {
@@ -53,10 +52,14 @@ export class PlayersDetailComponent implements OnInit, OnDestroy {
           })
         }
         else {
-          if (response.status === 204)
-            this.responseMessage = "The player hasn't played any games yet!"
-          else if (response.status === 404)
-            this.responseMessage = "The player does not exist!"
+          let responseMessage: string;
+          if (response.status === 204) {
+            responseMessage = "The player hasn't played any games yet!"
+          }
+          else if (response.status === 404) {
+            responseMessage = "The player does not exist!"
+          }
+          this.addError(responseMessage, true);
         }
       })
   }
@@ -78,5 +81,9 @@ export class PlayersDetailComponent implements OnInit, OnDestroy {
     if (gameStatus === 'IN_PROGRESS') {
       this.router.navigateByUrl(`game-play/${this.player.id}/${gameId}`);
     }
+  }
+
+  private addError(error: string, show: boolean): void {
+    this.messageService.add({ name: error, show: show });
   }
 }

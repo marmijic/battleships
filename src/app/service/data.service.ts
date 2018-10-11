@@ -73,8 +73,7 @@ export class DataService {
             catchError(
                 (error: HttpErrorResponse) => {
                     this.hideLoader();
-                    this.messageService.add({ name: 'foo', show: true })
-                    console.log(error)
+                    this.addError(error.error.error_code, true);
                     return Observable.throw(error)
                 }
             ))
@@ -112,5 +111,9 @@ export class DataService {
 
     private hideLoader(): void {
         this.loaderService.hide();
+    }
+
+    private addError(error: string, show: boolean): void {
+        this.messageService.add({ name: error, show: show });
     }
 }

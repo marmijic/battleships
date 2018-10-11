@@ -10,17 +10,12 @@ export class MessageService {
 
     constructor() { }
 
-    add(message: Message) {
+    add(message) {
         this.messageSubject.next(<Message>{
             name: message.name,
             show: message.show
         });
-    }
-
-    autoHide() {
-        setTimeout(() => {
-            this.hide();
-        }, 3000);
+        this.autoHide();
     }
 
     hide() {
@@ -29,4 +24,11 @@ export class MessageService {
             show: false
         });
     }
+
+    private autoHide() {
+        setTimeout(() => {
+            this.hide();
+        }, 5000);
+    }
+
 }
