@@ -6,27 +6,15 @@
     background-color: rgba(0, 0, 0, .65);
 }
 
-.loader .title {
+.loader .loader-wrapper {
     margin-top: 30vh;
     margin-bottom: 10vh;
     z-index: 11;
     text-align: center;
 }
 
-.loader .title img {
+.loader .loader-wrapper img {
     width: 280px;
-}
-
-.loader .battleship-progress {
-    z-index: 11;
-    width: 45%;
-    margin: 0 auto;
-}
-
-.loader .battleship-progress p {
-    text-align: center;
-    font-size: 30px;
-    color: #4A90E2;
 }
 
 .fa-spinner {

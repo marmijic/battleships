@@ -14,7 +14,8 @@ import { Salvo, Shot, SalvoResult } from 'src/app/models/shot';
 export class GamePlayComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   playerId: string;
-  responseMessage: string;
+  playerTurnId: string;
+  responseMessage: string = null;
   gameId: string;
   opponent: GamePlayer;
   self: GamePlayer;
@@ -56,21 +57,24 @@ export class GamePlayComponent implements OnInit, OnDestroy {
   getData(): void {
     this.dataService.gameStatus(this.playerId, this.gameId).subscribe(
       response => {
-        const playerTurnId = response.body.game.player_turn;
-        const checkWin: string = response.body.game.won;
-        if (this.playerId === playerTurnId) {
-          this.opponent = response.body.opponent;
-          this.self = response.body.self;
-          this.opponentRemainingShips = this.opponent.remaining_ships;
-          this.selfRemainingShips = this.self.remaining_ships;
-          this.opponentGrid = this.setGrid(this.opponent.board, true);
-          this.selfGrid = this.setGrid(this.self.board, false);
+        console.log(response)
+        if (response.body.game.player_turn) {
+          this.playerTurnId = response.body.game.player_turn;
+          const checkWin: string = response.body.game.won;
+          if (this.playerId === this.playerTurnId) {
+            this.opponent = response.body.opponent;
+            this.self = response.body.self;
+            this.opponentRemainingShips = this.opponent.remaining_ships;
+            this.selfRemainingShips = this.self.remaining_ships;
+            this.opponentGrid = this.setGrid(this.opponent.board, true);
+            this.selfGrid = this.setGrid(this.self.board, false);
+          }
+          else if (this.playerId !== this.playerTurnId && !checkWin) {
+            this.responseMessage = "It's not your turn, the player " + this.playerTurnId + " now play!";
+          }
         }
-        else if (this.playerId !== playerTurnId && !checkWin) {
-          this.responseMessage = "It's not your turn, the player " + playerTurnId + " now play!";
-        }
-        else if (checkWin) {
-          this.responseMessage = "Player " + checkWin + " has won!";
+        else if (response.body.game.won) {
+          this.responseMessage = "Player " + response.body.game.won + " has won!";
         }
       },
       error => {
