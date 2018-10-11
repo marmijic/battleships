@@ -70,21 +70,18 @@ export class GamePlayComponent implements OnInit, OnDestroy {
             this.selfGrid = this.setGrid(this.self.board, false);
           }
           else if (this.playerId !== this.playerTurnId && !checkWin) {
-            this.responseMessage = "It's not your turn, the player " + this.playerTurnId + " now play!";
+            this.responseMessage = `It's not your turn, the player ${this.playerTurnId} now play!`;
           }
         }
         else if (response.body.game.won) {
-          this.responseMessage = "Player " + response.body.game.won + " has won!";
+          this.responseMessage = `Player ${response.body.game.won} has won!`;
         }
-      },
-      error => {
-        console.warn(error)
       }
     )
   }
 
   shot(number: string, letter: string): void {
-    this.shots.salvo.push(number + 'x' + letter);
+    this.shots.salvo.push(`${number}x${letter}`);
     this.shotCounter++;
     if (this.selfRemainingShips === this.shotCounter || this.emptyFields === this.shotCounter) {
       this.dataService.gameShot(this.playerId, this.gameId, this.shots).subscribe(
@@ -104,9 +101,6 @@ export class GamePlayComponent implements OnInit, OnDestroy {
               salvo: result
             };
           }
-        },
-        error => {
-          console.warn(error);
         }
       )
     }
@@ -117,9 +111,6 @@ export class GamePlayComponent implements OnInit, OnDestroy {
       response => {
         if (response.status === 204)
           this.getData();
-      },
-      error => {
-        console.warn(error)
       }
     )
   }

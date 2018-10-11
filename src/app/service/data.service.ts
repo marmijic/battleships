@@ -12,35 +12,35 @@ export class DataService {
     constructor(private http: HttpClient, private loaderService: LoaderService) { }
 
     playersList(): Observable<any> {
-        return this.getData('player/list')
+        return this.getData(`player/list`)
     }
 
     playerProfile(playerId: string): Observable<any> {
-        return this.getData('player/' + playerId);
+        return this.getData(`player/${playerId}`);
     }
 
     playerDetail(playerId: string): Observable<any> {
-        return this.getData('player/' + playerId + '/game/list')
+        return this.getData(`player/${playerId}/game/list`)
     }
 
     createPlayer(body: Player): Observable<any> {
-        return this.postData('/player', body);
+        return this.postData(`/player`, body);
     }
 
     createGame(opponentId: string, body: any): Observable<any> {
-        return this.postData('player/' + opponentId + '/game', body)
+        return this.postData(`player/${opponentId}/game`, body)
     }
 
     gameStatus(playerId: string, gameId: string): Observable<any> {
-        return this.getData('player/' + playerId + '/game/' + gameId);
+        return this.getData(`player/${playerId}/game/${gameId}`);
     }
 
-    gameShot(playerId: string, gameId: string, salvo: any) {
-        return this.putData('player/' + playerId + '/game/' + gameId, salvo)
+    gameShot(playerId: string, gameId: string, body: any) {
+        return this.putData(`player/${playerId}/game/${gameId}`, body)
     }
 
     turnAutopilot(playerId: string, gameId: string) {
-        return this.putData('player/' + playerId + '/game/' + gameId + '/autopilot')
+        return this.putData(`player/${playerId}/game/${gameId}/autopilot`)
     }
 
     getData(params: string): Observable<any> {

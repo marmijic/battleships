@@ -52,7 +52,15 @@ button:last-of-type {
     }
 }
 
-@media (min-width: 576px) {
+@media(min-width:768px) {
+    .table {
+        margin: 0 auto;
+        width: auto;
+        display: table;
+    }
+}
+
+@media (min-width: 577px) {
     .modal-dialog {
         max-width: 991px;
         position: absolute;
@@ -61,5 +69,12 @@ button:last-of-type {
         transform: translateY(-50%);
         width: 50%;
         left: 25%;
+    }
+}
+
+@media(max-width:576px) {
+    .row {
+        margin-left: 0px;
+        margin-right: 0px;
     }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { DataService } from '../../../service';
 import { Player } from '../../../models/player';
 
@@ -7,23 +7,17 @@ import { Player } from '../../../models/player';
   templateUrl: './players-list.component.html',
   styleUrls: ['./players-list.component.css']
 })
-export class PlayersListComponent implements OnInit {
+export class PlayersListComponent  {
   players: Array<Player>;
 
   constructor(private dataService: DataService) {
     this.getData();
   }
 
-  ngOnInit() {
-  }
-
   getData() {
     this.dataService.playersList().subscribe(
       response => {
         this.players = response.body.players;
-      },
-      error => {
-        console.log(error)
       }
     )
   }

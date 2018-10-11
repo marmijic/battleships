@@ -32,12 +32,6 @@ export class PlayerCreateComponent {
         else if (response.status === 409) {
           this.responseMessage = 'Player with that email already exists!'
         }
-      },
-      error => {
-        console.warn(error);
-        if (error.status === 409) {
-          this.responseMessage = 'Player with that email already exists!'
-        }
       }
     )
   }

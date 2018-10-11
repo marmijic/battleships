@@ -16,11 +16,3 @@ td.in-progress .fa,
 td.in-progress .game-status {
     color: #3e1971;
 }
-
-@media(min-width:768px) {
-    .table {
-        margin: 0 auto;
-        width: auto;
-        display: table;
-    }
-}

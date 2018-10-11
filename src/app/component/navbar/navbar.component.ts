@@ -38,7 +38,7 @@ export class NavbarComponent {
     this.checkWindowSize()
   }
 
-  private checkWindowSize(): void {
+  checkWindowSize(): void {
     const bodyWidth = document.getElementsByTagName('body')[0].offsetWidth;
     if (bodyWidth > 991) {
       this.showNavbar = true;
