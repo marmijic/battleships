@@ -1,4 +1,4 @@
-export class GameDetail {
+export interface GameDetail {
     game_id: string;
     opponent_id: string;
     status: string;

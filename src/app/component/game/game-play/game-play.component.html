@@ -1,4 +1,4 @@
-<div class="row" *ngIf="selfGrid.length > 0 && opponentGrid.length > 0; else infoText">
+<div class="row" *ngIf="selfGrid.length > 0 && opponentGrid.length > 0">
     <div class="col-12 buttons text-right">
         <button class="btn btn-info" (click)="autopilot()">AUTOPILOT</button>
         <button class="btn btn-default" [routerLink]="['/players/detail/' + playerId]">LEAVE</button>
@@ -70,7 +70,3 @@
         </div>
     </div>
 </div>
-
-<ng-template #infoText>
-    <app-error [errorMessage]="responseMessage"></app-error>
-</ng-template>

@@ -10,10 +10,6 @@ export class NavbarComponent {
   showNavbar: boolean = false;
   navItems: Array<any> = [
     {
-      name: 'Home',
-      link: ''
-    },
-    {
       name: 'Players',
       link: 'players'
     },

@@ -3,7 +3,7 @@
     height: 100vh;
     position: fixed;
     z-index: 1001;
-    background-color: rgba(0, 0, 0, .35);
+    background-color: rgba(0, 0, 0, .65);
 }
 
 .loader .title {

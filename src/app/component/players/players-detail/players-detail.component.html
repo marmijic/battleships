@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-12 col-md-10 offset-md-1">
-        <table class="table table-responsive text-center" *ngIf="games; else infoText">
+        <table class="table table-responsive text-center" *ngIf="games">
             <thead>
                 <tr>
                     <th>#</th>
@@ -27,7 +27,3 @@
         </table>
     </div>
 </div>
-
-<ng-template #infoText>
-    <app-error [errorMessage]="responseMessage"></app-error>
-</ng-template>

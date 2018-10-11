@@ -7,7 +7,6 @@ import { AppComponent } from './app.component';
 import {
   HomeComponent,
   NavbarComponent,
-  ErrorComponent,
   PlayersListComponent,
   PlayersDetailComponent,
   PlayerCreateComponent,
@@ -23,7 +22,6 @@ import { LoaderComponent } from './component/loader/loader.component';
   declarations: [
     AppComponent,
     HomeComponent,
-    ErrorComponent,
     NavbarComponent,
     PlayersListComponent,
     PlayersDetailComponent,

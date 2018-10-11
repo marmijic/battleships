@@ -3,10 +3,13 @@ import { HttpClient } from "@angular/common/http";
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { Player } from '../models/player';
+import { map } from 'rxjs/operators';
+import { LoaderService } from './loader.service';
+
 
 @Injectable()
 export class DataService {
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient, private loaderService: LoaderService) { }
 
     playersList(): Observable<any> {
         return this.getData('player/list')
@@ -36,27 +39,56 @@ export class DataService {
         return this.putData('player/' + playerId + '/game/' + gameId, salvo)
     }
 
-    turnAutopilot(playerId: string, gameId: string){
+    turnAutopilot(playerId: string, gameId: string) {
         return this.putData('player/' + playerId + '/game/' + gameId + '/autopilot')
     }
 
     getData(params: string): Observable<any> {
+        this.showLoader();
         const url: string = this.getUrl() + params;
         const options = this.getOptions();
-        return this.http.get(url, options);
+        return this.http.get(url, options).pipe(map(
+            response => {
+                this.hideLoader()
+                return response;
+            }),
+            error => {
+                this.hideLoader()
+                return error;
+            }
+        );
     }
 
     postData(params: string, body: Player): Observable<any> {
+        this.showLoader();
         const url: string = this.getUrl() + params;
         const options = this.getOptions();
-        return this.http.post(url, body, options);
+        return this.http.post(url, body, options).pipe(map(
+            response => {
+                this.hideLoader();
+                return response;
+            },
+            error => {
+                this.hideLoader();
+                return error;
+            }
+        ));
     }
 
     putData(params: string, body?: any): Observable<any> {
-        console.log(params, body)
+        this.showLoader();
         const url: string = this.getUrl() + params;
         const options = this.getOptions();
-        return this.http.put(url, body, options);
+        return this.http.put(url, body, options).pipe(map(
+            response => {
+                this.hideLoader();
+                return response;
+            },
+            error => {
+                this.hideLoader();
+                return error;
+            }
+        ))
     }
 
     private getUrl(): string {
@@ -67,5 +99,13 @@ export class DataService {
         return {
             observe: 'response'
         };
+    }
+
+    private showLoader(): void {
+        this.loaderService.show();
+    }
+
+    private hideLoader(): void {
+        this.loaderService.hide();
     }
 }
