@@ -34,7 +34,8 @@
     border-bottom: 1px solid;
 }
 
-.opponent .empty-field:hover {
+.opponent .empty-field:hover,
+.empty-field-hover {
     background-color: #cccc00;
 }
 
@@ -60,6 +61,15 @@
 
 .modal {
     display: block;
+}
+
+.field-legend .field {
+    width: 50px;
+    margin: 0 auto 20px;
+}
+
+.field-legend .empty-field {
+    border: 1px solid;
 }
 
 @media(max-width: 600px) {

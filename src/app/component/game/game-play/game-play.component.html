@@ -1,4 +1,13 @@
 <div class="row" *ngIf="selfGrid.length > 0 && opponentGrid.length > 0">
+    <div class="col-12">
+        <div class="row text-center field-legend">
+            <p>Legend:</p>
+            <div class="col-6 col-md-4 col-lg-2" *ngFor="let gridState of gridStates">
+                <div class="field {{gridState.state}}"></div>
+                <p>{{ gridState.name }}</p>
+            </div>
+        </div>
+    </div>
     <div class="col-12 buttons text-right">
         <button class="btn btn-info" (click)="autopilot()">AUTOPILOT</button>
         <button class="btn btn-default" [routerLink]="['/players/detail/' + playerId]">LEAVE</button>

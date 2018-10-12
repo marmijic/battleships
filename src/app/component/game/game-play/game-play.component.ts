@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService, MessageService } from '../../../service';
-import { Grid } from '../../../models/grid';
+import { Grid, GridState } from '../../../models/grid';
 import { GamePlayer } from '../../../models/game-player';
 import { Salvo, Shot, SalvoResult } from 'src/app/models/shot';
 
@@ -14,9 +14,9 @@ import { Salvo, Shot, SalvoResult } from 'src/app/models/shot';
 export class GamePlayComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   playerId: string;
+  gameId: string;
   playerTurnId: string;
   responseMessage: string = null;
-  gameId: string;
   opponent: GamePlayer;
   self: GamePlayer;
   opponentRemainingShips: number = 10;
@@ -32,6 +32,32 @@ export class GamePlayComponent implements OnInit, OnDestroy {
   shotCounter: number = 0;
   shotResult: Shot;
   emptyFields: number = 0;
+  gridStates: Array<GridState> = [
+    {
+      name: 'An empty or unknown quadrant.',
+      state: 'empty-field'
+    },
+    {
+      name: 'A quadrant taken by part of a ship which has not been hit yet.',
+      state: 'ship-field'
+    },
+    {
+      name: 'A quadrant that contains a missed shot.',
+      state: 'missed-field'
+    },
+    {
+      name: 'A quadrant taken by part of a ship which was hit by a shot.',
+      state: 'shot-field'
+    },
+    {
+      name: 'A shot that has jut been sent',
+      state: 'user-shot'
+    },
+    {
+      name: 'Hover on empty or unknown quadrant.',
+      state: 'empty-field-hover'
+    }
+  ]
 
   constructor(private router: Router, private route: ActivatedRoute, private dataService: DataService, private messageService: MessageService) {
     this.router.routeReuseStrategy.shouldReuseRoute = function () {
