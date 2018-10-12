@@ -1,8 +1,8 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DataService } from '../../../service';
-import { GameDetail } from '../../../models/game-detail';
+import { DataService, MessageService } from '../../../service';
+import { GameDetail } from '../../../models/game';
 import { Player } from '../../../models/player';
 
 @Component({
@@ -10,10 +10,9 @@ import { Player } from '../../../models/player';
   templateUrl: './players-detail.component.html',
   styleUrls: ['./players-detail.component.css']
 })
-export class PlayersDetailComponent implements OnDestroy {
+export class PlayersDetailComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   games: Array<GameDetail>;
-  responseMessage: string = '';
   player: Player = {
     name: '',
     email: '',
@@ -21,6 +20,9 @@ export class PlayersDetailComponent implements OnDestroy {
   };
 
   constructor(private router: Router, private route: ActivatedRoute, private dataService: DataService) {
+  }
+
+  ngOnInit() {
     this.subscriptions.push(this.route.params.subscribe(params => {
       this.player.id = params.id;
       this.getPlayer(params.id).then(value => {
@@ -50,14 +52,8 @@ export class PlayersDetailComponent implements OnDestroy {
           })
         }
         else {
-          if (response.status === 204)
-            this.responseMessage = "The player hasn't played any games yet!"
-          else if (response.status === 404)
-            this.responseMessage = "The player does not exist!"
+          this.dataService.checkError(response.status);
         }
-      },
-      error => {
-        console.warn(error)
       })
   }
 
@@ -69,10 +65,6 @@ export class PlayersDetailComponent implements OnDestroy {
             name: response.body.name,
             email: response.body.email
           });
-        },
-        error => {
-          console.warn(error);
-          reject(error);
         }
       )
     })
@@ -80,7 +72,7 @@ export class PlayersDetailComponent implements OnDestroy {
 
   navigateTo(gameId: string, gameStatus: string): void {
     if (gameStatus === 'IN_PROGRESS') {
-      this.router.navigateByUrl('game-play/' + this.player.id + '/' + gameId);
+      this.router.navigateByUrl(`game-play/${this.player.id}/${gameId}`);
     }
   }
 }

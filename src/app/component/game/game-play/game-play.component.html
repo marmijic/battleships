@@ -1,4 +1,13 @@
-<div class="row" *ngIf="selfGrid.length > 0 && opponentGrid.length > 0; else infoText">
+<div class="row" *ngIf="selfGrid.length > 0 && opponentGrid.length > 0">
+    <div class="col-12">
+        <div class="row text-center field-legend">
+            <p>Legend:</p>
+            <div class="col-6 col-md-4 col-lg-2" *ngFor="let gridState of gridStates">
+                <div class="field {{gridState.state}}"></div>
+                <p>{{ gridState.name }}</p>
+            </div>
+        </div>
+    </div>
     <div class="col-12 buttons text-right">
         <button class="btn btn-info" (click)="autopilot()">AUTOPILOT</button>
         <button class="btn btn-default" [routerLink]="['/players/detail/' + playerId]">LEAVE</button>
@@ -9,14 +18,13 @@
             <p>Ships status {{ opponentRemainingShips }} / 10</p>
             <p>Number of shots {{ shotCounter }} / {{ selfRemainingShips }}</p>
         </div>
-        <div class="row">
-            <div class="field"></div>
+        <div class="row columns">
             <div class="field" *ngFor="let column of columns">
                 {{ column }}
             </div>
         </div>
         <div class="row letter-row opponent" *ngFor="let row of opponentGrid; let i = index">
-            <div class="field">{{ rows[i] }}</div>
+            <div class="field">{{ rows[i] + 1 }}</div>
             <button class="field field-border" *ngFor="let column of row; let j = index" [disabled]="column.value !== '.'" (click)="shot(column.number - 1, column.letter); column.value = 'S'" [ngClass]="{'empty-field': column.value === '.','ship-field': column.value === '#','missed-field': column.value === 'O','shot-field': column.value === 'X', 'user-shot': column.value === 'S'}">
             </button>
         </div>
@@ -26,28 +34,27 @@
             <h1>Self</h1>
             <p>Ships status {{ selfRemainingShips }} / 10</p>
         </div>
-        <div class="row">
-            <div class="field"></div>
+        <div class="row columns">
             <div class="field" *ngFor="let column of columns">
                 {{ column }}
             </div>
         </div>
         <div class="row letter-row" *ngFor="let row of selfGrid; let i = index">
-            <div class="field">{{ rows[i] }}</div>
+            <div class="field">{{ rows[i] + 1 }}</div>
             <button class="field field-border" *ngFor="let column of row" [ngClass]="{'empty-field': column.value === '.','ship-field': column.value === '#','missed-field': column.value === 'O','shot-field': column.value === 'X'}">
             </button>
         </div>
     </div>
 </div>
 
-<div class="modal" tabindex="-1" role="dialog" *ngIf="showShotDialog">
+<div class="modal" tabindex="-1" role="dialog" *ngIf="showShotDialog || responseMessage">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Shot result</h5>
             </div>
             <div class="modal-body">
-                <table class="table text-center">
+                <table class="table text-center" *ngIf="showShotDialog">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -63,14 +70,12 @@
                         </tr>
                     </tbody>
                 </table>
+                <p *ngIf="responseMessage">{{ responseMessage }}</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" [routerLink]="['/game-play/' + shotResult.playerTurn + '/' + shotResult.gameId]">Next player</button>
+                <button *ngIf="showShotDialog" type="button" class="btn btn-secondary" [routerLink]="['/game-play/' + shotResult.playerTurn + '/' + shotResult.gameId]">Next player</button>
+                <button *ngIf="responseMessage" type="button" class="btn btn-secondary" [routerLink]="playerTurnId ? ['/game-play/' + playerTurnId + '/' + gameId] : ['/game-create']">{{ playerTurnId ? 'Go to player ' + playerTurnId : 'Create new game' }}</button>
             </div>
         </div>
     </div>
 </div>
-
-<ng-template #infoText>
-    <app-error [errorMessage]="responseMessage"></app-error>
-</ng-template>

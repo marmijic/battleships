@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { DataService } from '../../../service';
+import { DataService, MessageService } from '../../../service';
 import { Player } from '../../../models/player';
 
 @Component({
@@ -12,7 +12,7 @@ export class PlayerCreateComponent {
   createPlayerForm: FormGroup;
   responseMessage: string = '';
 
-  constructor(private FormBuilder: FormBuilder, private dataService: DataService) {
+  constructor(private FormBuilder: FormBuilder, private dataService: DataService, private messageService: MessageService) {
     this.setForm();
   }
 
@@ -24,20 +24,10 @@ export class PlayerCreateComponent {
 
     this.dataService.createPlayer(body).subscribe(
       response => {
-        console.log(response)
         if (response.status === 201) {
-          this.responseMessage = 'Player was created!'
+          this.messageService.add({ name: 'Player was created', show: true, warning: false });
           this.setForm();
-        }
-        else if (response.status === 409) {
-          this.responseMessage = 'Player with that email already exists!'
-        }
-      },
-      error => {
-        console.warn(error);
-        if (error.status === 409) {
-          this.responseMessage = 'Player with that email already exists!'
-        }
+        }        
       }
     )
   }

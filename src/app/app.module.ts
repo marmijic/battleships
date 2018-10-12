@@ -4,32 +4,41 @@ import { HttpClientModule } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
+
 import {
   HomeComponent,
   NavbarComponent,
-  ErrorComponent,
   PlayersListComponent,
   PlayersDetailComponent,
   PlayerCreateComponent,
   GameCreateComponent,
   GamePlayComponent,
-  NotFoundComponent
+  NotFoundComponent,
+  LoaderComponent,
+  MessageComponent
 } from './component';
-import { DataService } from './service';
+
+import {
+  DataService,
+  LoaderService,
+  MessageService
+} from './service';
+
 import { AppRoutingModule } from './app.routing.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    ErrorComponent,
     NavbarComponent,
     PlayersListComponent,
     PlayersDetailComponent,
     PlayerCreateComponent,
     GameCreateComponent,
     GamePlayComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    LoaderComponent,
+    MessageComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +48,9 @@ import { AppRoutingModule } from './app.routing.module';
     AppRoutingModule
   ],
   providers: [
-    DataService
+    DataService,
+    LoaderService,
+    MessageService
   ],
   bootstrap: [AppComponent]
 })

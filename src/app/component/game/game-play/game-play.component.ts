@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DataService } from '../../../service';
-import { Grid } from '../../../models/grid';
-import { GamePlayer } from '../../../models/game-player';
+import { DataService, MessageService } from '../../../service';
+import { Grid, GridState } from '../../../models/grid';
+import { GamePlayer } from '../../../models/game';
 import { Salvo, Shot, SalvoResult } from 'src/app/models/shot';
 
 @Component({
@@ -14,15 +14,16 @@ import { Salvo, Shot, SalvoResult } from 'src/app/models/shot';
 export class GamePlayComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   playerId: string;
-  responseMessage: string;
   gameId: string;
+  playerTurnId: string;
+  responseMessage: string = null;
   opponent: GamePlayer;
   self: GamePlayer;
   opponentRemainingShips: number = 10;
   selfRemainingShips: number = 10;
   opponentGrid: Array<Array<Grid>> = [];
   selfGrid: Array<Array<Grid>> = [];
-  rows: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  rows: Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   columns: Array<string> = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
   showShotDialog: boolean = false;
   shots: Salvo = {
@@ -30,9 +31,35 @@ export class GamePlayComponent implements OnInit, OnDestroy {
   };
   shotCounter: number = 0;
   shotResult: Shot;
-  emptyFields: number = 0;
+  emptyFieldsArray: Array<Grid> = [];
+  gridStates: Array<GridState> = [
+    {
+      name: 'An empty or unknown quadrant.',
+      state: 'empty-field'
+    },
+    {
+      name: 'A quadrant taken by part of a ship which has not been hit yet.',
+      state: 'ship-field'
+    },
+    {
+      name: 'A quadrant that contains a missed shot.',
+      state: 'missed-field'
+    },
+    {
+      name: 'A quadrant taken by part of a ship which was hit by a shot.',
+      state: 'shot-field'
+    },
+    {
+      name: 'A shot that has jut been sent',
+      state: 'user-shot'
+    },
+    {
+      name: 'Hover on empty or unknown quadrant.',
+      state: 'empty-field-hover'
+    }
+  ]
 
-  constructor(private router: Router, private route: ActivatedRoute, private dataService: DataService) {
+  constructor(private router: Router, private route: ActivatedRoute, private dataService: DataService, private messageService: MessageService) {
     this.router.routeReuseStrategy.shouldReuseRoute = function () {
       return false;
     };
@@ -56,67 +83,44 @@ export class GamePlayComponent implements OnInit, OnDestroy {
   getData(): void {
     this.dataService.gameStatus(this.playerId, this.gameId).subscribe(
       response => {
-        const playerTurnId = response.body.game.player_turn;
-        const checkWin: string = response.body.game.won;
-        if (this.playerId === playerTurnId) {
-          this.opponent = response.body.opponent;
-          this.self = response.body.self;
-          this.opponentRemainingShips = this.opponent.remaining_ships;
-          this.selfRemainingShips = this.self.remaining_ships;
-          this.opponentGrid = this.setGrid(this.opponent.board, true);
-          this.selfGrid = this.setGrid(this.self.board, false);
+        if (response.body.game.player_turn) {
+          this.playerTurnId = response.body.game.player_turn;
+          const checkWin: string = response.body.game.won;
+          if (this.playerId === this.playerTurnId) {
+            this.opponent = response.body.opponent;
+            this.self = response.body.self;
+            this.opponentRemainingShips = this.opponent.remaining_ships;
+            this.selfRemainingShips = this.self.remaining_ships;
+            this.opponentGrid = this.setGrid(this.opponent.board, true);
+            this.selfGrid = this.setGrid(this.self.board, false);
+          }
+          else if (this.playerId !== this.playerTurnId && !checkWin) {
+            this.responseMessage = `It's not your turn, the player ${this.playerTurnId} now play!`;
+          }
         }
-        else if (this.playerId !== playerTurnId && !checkWin) {
-          this.responseMessage = "It's not your turn, the player " + playerTurnId + " now play!";
+        else if (response.body.game.won) {
+          this.responseMessage = `Player ${response.body.game.won} has won!`;
         }
-        else if (checkWin) {
-          this.responseMessage = "Player " + checkWin + " has won!";
-        }
-      },
-      error => {
-        console.warn(error)
       }
     )
   }
 
   shot(number: string, letter: string): void {
-    this.shots.salvo.push(number + 'x' + letter);
+    this.shots.salvo.push(`${number}x${letter}`);
     this.shotCounter++;
-    console.log(this.emptyFields)
-    console.log(this.shotCounter)
-    if (this.selfRemainingShips === this.shotCounter || this.emptyFields === this.shotCounter) {
-      this.dataService.gameShot(this.playerId, this.gameId, this.shots).subscribe(
-        response => {
-          if (response.status === 200) {
-            this.showShotDialog = true;
-            let result: Array<SalvoResult> = [];
-            Object.keys(response.body.salvo).forEach(value => {
-              result.push({
-                field: value,
-                result: response.body.salvo[value]
-              })
-            })
-            this.shotResult = {
-              playerTurn: response.body.game.player_turn,
-              gameId: this.gameId,
-              salvo: result
-            };
-          }
-        },
-        error => {
-          console.warn(error);
-        }
-      )
+    if (this.selfRemainingShips === this.shotCounter || this.emptyFieldsArray.length === this.shotCounter) {
+      this.saveShots();
     }
   }
 
-  autopilot(){
+  autopilot() {
     this.dataService.turnAutopilot(this.playerId, this.gameId).subscribe(
       response => {
-        console.log(response)
-      },
-      error => {
-        console.log(error)
+        if (response.status === 204) {
+          this.messageService.add({ name: 'Auto pilot status: ON.', show: true, warning: false });
+          this.shots.salvo = this.getRandomShotsIndex();
+          this.saveShots();
+        }
       }
     )
   }
@@ -132,11 +136,47 @@ export class GamePlayComponent implements OnInit, OnDestroy {
           number: this.rows[i],
           letter: this.columns[j]
         })
-        if (arrRow[j] === '.' && flag)
-          this.emptyFields++;
+        if (arrRow[j] === '.' && flag) {
+          this.emptyFieldsArray.push({
+            value: arrRow[j],
+            number: this.rows[i],
+            letter: this.columns[j]
+          })
+        }
       }
       grid.push(row);
     }
     return grid;
+  }
+
+  private getRandomShotsIndex(): Array<string> {
+    let result: Array<string> = [];
+    for (let i = 0; i < this.selfRemainingShips; i++) {
+      const randomIndex = Math.floor(Math.random() * this.emptyFieldsArray.length)
+      result.push(`${this.emptyFieldsArray[randomIndex].number}x${this.emptyFieldsArray[randomIndex].letter}`)
+    }
+    return result
+  }
+
+  private saveShots(): void {
+    this.dataService.gameShot(this.playerId, this.gameId, this.shots).subscribe(
+      response => {
+        if (response.status === 200) {
+          this.showShotDialog = true;
+          let result: Array<SalvoResult> = [];
+          Object.keys(response.body.salvo).forEach(value => {
+            result.push({
+              field: value,
+              result: response.body.salvo[value]
+            })
+          })
+          this.shotResult = {
+            playerTurn: response.body.game.player_turn,
+            gameId: this.gameId,
+            salvo: result
+          };
+        }
+      }
+    )
   }
 }

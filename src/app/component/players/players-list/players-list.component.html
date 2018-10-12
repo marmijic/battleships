@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
-        <table class="table table-responsive" *ngIf="players; else infoText">
+        <table class="table table-responsive" *ngIf="players">
             <thead>
                 <tr>
                     <th>#</th>
@@ -18,8 +18,5 @@
                 </tr>
             </tbody>
         </table>
-        <ng-template #infoText>
-            <app-error [errorMessage]="'No players!'"></app-error>
-        </ng-template>
     </div>
 </div>
