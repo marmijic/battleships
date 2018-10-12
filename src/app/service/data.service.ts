@@ -88,16 +88,19 @@ export class DataService {
     }
 
     putData(params: string, body?: any): Observable<any> {
+        console.log(params, body)
         this.showLoader();
         const url: string = this.getUrl() + params;
         const options = this.getOptions();
         return this.http.put(url, body, options).pipe(map(
             response => {
+                console.log(response)
                 this.hideLoader();
                 return response;
             }),
             catchError(
                 (error: HttpErrorResponse) => {
+                    console.log(error)
                     this.hideLoader();
                     this.checkError(error.status);
                     return throwError(error)
@@ -109,12 +112,16 @@ export class DataService {
     checkError(status: number): void {
         let errors: Array<ErrorMessage> = [
             {
+                status: 0,
+                message: "Something went wrong, please take manualy shot"
+            },
+            {
                 status: 201,
                 message: "No contenct"
             },
             {
                 status: 204,
-                message: "The player hasn't played any games yet!"
+                message: "The player hasn't played any games yet"
             },
             {
                 status: 400,
@@ -126,15 +133,19 @@ export class DataService {
             },
             {
                 status: 409,
-                message: "Player with the supplied email already exist."
+                message: "Player with the supplied email already exist"
             }
         ];
         if (status !== 404) {
             if (status === 204) {
                 this.router.navigateByUrl('players')
             }
-            errors = errors.filter(value => value.status === status);
-            this.addMessage(errors[0].message, true, true);
+            else {
+                errors = errors.filter(value => value.status === status);
+                this.addMessage(errors[0].message, true, true);
+                if (status === 0)
+                    location.reload();
+            }
         }
         else {
             this.router.navigateByUrl('not-found')
@@ -159,9 +170,7 @@ export class DataService {
         this.loaderService.hide();
     }
 
-
     private addMessage(error: string, show: boolean, warning: boolean): void {
         this.messageService.add({ name: error, show: show, warning: warning });
     }
-
 }

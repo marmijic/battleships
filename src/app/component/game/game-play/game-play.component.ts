@@ -31,7 +31,7 @@ export class GamePlayComponent implements OnInit, OnDestroy {
   };
   shotCounter: number = 0;
   shotResult: Shot;
-  emptyFields: number = 0;
+  emptyFieldsArray: Array<Grid> = [];
   gridStates: Array<GridState> = [
     {
       name: 'An empty or unknown quadrant.',
@@ -109,34 +109,19 @@ export class GamePlayComponent implements OnInit, OnDestroy {
   shot(number: string, letter: string): void {
     this.shots.salvo.push(`${number}x${letter}`);
     this.shotCounter++;
-    if (this.selfRemainingShips === this.shotCounter || this.emptyFields === this.shotCounter) {
-      this.dataService.gameShot(this.playerId, this.gameId, this.shots).subscribe(
-        response => {
-          if (response.status === 200) {
-            this.showShotDialog = true;
-            let result: Array<SalvoResult> = [];
-            Object.keys(response.body.salvo).forEach(value => {
-              result.push({
-                field: value,
-                result: response.body.salvo[value]
-              })
-            })
-            this.shotResult = {
-              playerTurn: response.body.game.player_turn,
-              gameId: this.gameId,
-              salvo: result
-            };
-          }
-        }
-      )
+    if (this.selfRemainingShips === this.shotCounter || this.emptyFieldsArray.length === this.shotCounter) {
+      this.saveShots();
     }
   }
 
   autopilot() {
+    console.log(this.getRandomShotsIndex())
     this.dataService.turnAutopilot(this.playerId, this.gameId).subscribe(
       response => {
         if (response.status === 204) {
-          this.messageService.add({ name: 'Auto pilot status: ON. First take all shots, and in next round autopilot will take his job :)', show: true, warning: false });
+          this.messageService.add({ name: 'Auto pilot status: ON.', show: true, warning: false });
+          const shots:Array<string> = this.getRandomShotsIndex()
+          this.saveShots(shots);
         }
       }
     )
@@ -146,6 +131,7 @@ export class GamePlayComponent implements OnInit, OnDestroy {
     let grid: Array<Array<Grid>> = [];
     for (let i = 0; i < arr.length; i++) {
       let row: Array<Grid> = [];
+      let emptyField: Array<Grid> = [];
       let arrRow: Array<string> = Array.from(arr[i]);
       for (let j = 0; j < arrRow.length; j++) {
         row.push({
@@ -153,11 +139,49 @@ export class GamePlayComponent implements OnInit, OnDestroy {
           number: this.rows[i],
           letter: this.columns[j]
         })
-        if (arrRow[j] === '.' && flag)
-          this.emptyFields++;
+        if (arrRow[j] === '.' && flag) {
+          this.emptyFieldsArray.push({
+            value: arrRow[j],
+            number: this.rows[i],
+            letter: this.columns[j]
+          })
+        }
       }
       grid.push(row);
     }
     return grid;
+  }
+
+  private getRandomShotsIndex(): Array<string> {
+    let result: Array<string> = [];
+    for (let i = 0; i < this.selfRemainingShips; i++) {
+      const randomIndex = Math.floor(Math.random() * this.emptyFieldsArray.length)
+      result.push(`${this.emptyFieldsArray[randomIndex].number}x${this.emptyFieldsArray[randomIndex].letter}`)
+    }
+    return result
+  }
+
+  private saveShots(randomShots?: Array<string>): void {
+    if(randomShots)
+      this.shots.salvo = randomShots;
+    this.dataService.gameShot(this.playerId, this.gameId, this.shots).subscribe(
+      response => {
+        if (response.status === 200) {
+          this.showShotDialog = true;
+          let result: Array<SalvoResult> = [];
+          Object.keys(response.body.salvo).forEach(value => {
+            result.push({
+              field: value,
+              result: response.body.salvo[value]
+            })
+          })
+          this.shotResult = {
+            playerTurn: response.body.game.player_turn,
+            gameId: this.gameId,
+            salvo: result
+          };
+        }
+      }
+    )
   }
 }
