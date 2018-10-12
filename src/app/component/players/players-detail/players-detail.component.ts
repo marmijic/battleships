@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService, MessageService } from '../../../service';
-import { GameDetail } from '../../../models/game-detail';
+import { GameDetail } from '../../../models/game';
 import { Player } from '../../../models/player';
 
 @Component({
@@ -19,7 +19,7 @@ export class PlayersDetailComponent implements OnInit, OnDestroy {
     id: ''
   };
 
-  constructor(private router: Router, private route: ActivatedRoute, private dataService: DataService, private messageService: MessageService) {
+  constructor(private router: Router, private route: ActivatedRoute, private dataService: DataService) {
   }
 
   ngOnInit() {
@@ -74,9 +74,5 @@ export class PlayersDetailComponent implements OnInit, OnDestroy {
     if (gameStatus === 'IN_PROGRESS') {
       this.router.navigateByUrl(`game-play/${this.player.id}/${gameId}`);
     }
-  }
-
-  private addError(error: string, show: boolean): void {
-    this.messageService.add({ name: error, show: show });
   }
 }

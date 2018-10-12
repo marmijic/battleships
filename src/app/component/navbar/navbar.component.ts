@@ -1,5 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
+import {Navbar} from '../../models/navbar'
 
 @Component({
   selector: 'app-navbar',
@@ -8,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent {
   showNavbar: boolean = false;
-  navItems: Array<any> = [
+  navItems: Array<Navbar> = [
     {
       name: 'Players',
       link: 'players'

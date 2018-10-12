@@ -4,6 +4,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
+
 import {
   HomeComponent,
   NavbarComponent,
@@ -16,11 +17,13 @@ import {
   LoaderComponent,
   MessageComponent
 } from './component';
+
 import {
   DataService,
   LoaderService,
   MessageService
 } from './service';
+
 import { AppRoutingModule } from './app.routing.module';
 
 @NgModule({

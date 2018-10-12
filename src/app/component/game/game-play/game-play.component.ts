@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService, MessageService } from '../../../service';
 import { Grid, GridState } from '../../../models/grid';
-import { GamePlayer } from '../../../models/game-player';
+import { GamePlayer } from '../../../models/game';
 import { Salvo, Shot, SalvoResult } from 'src/app/models/shot';
 
 @Component({
@@ -83,6 +83,7 @@ export class GamePlayComponent implements OnInit, OnDestroy {
   getData(): void {
     this.dataService.gameStatus(this.playerId, this.gameId).subscribe(
       response => {
+        console.log(response)
         if (response.body.game.player_turn) {
           this.playerTurnId = response.body.game.player_turn;
           const checkWin: string = response.body.game.won;
@@ -135,7 +136,7 @@ export class GamePlayComponent implements OnInit, OnDestroy {
     this.dataService.turnAutopilot(this.playerId, this.gameId).subscribe(
       response => {
         if (response.status === 204) {
-          this.messageService.add({ name: 'Auto pilot status: ON', show: true, warning: false });
+          this.messageService.add({ name: 'Auto pilot status: ON. First take all shots, and in next round autopilot will take his job :)', show: true, warning: false });
         }
       }
     )

@@ -24,9 +24,6 @@ export class GameCreateComponent {
       response => {
         this.players = response.body.players;
         this.setPlayers();
-      },
-      error => {
-        console.warn(error)
       }
     )
   }

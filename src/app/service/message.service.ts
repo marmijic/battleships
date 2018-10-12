@@ -18,17 +18,13 @@ export class MessageService {
         });
         this.autoHide();
     }
-
-    private hide() {
-        this.messageSubject.next(<Message>{
-            name: null,
-            show: false
-        });
-    }
-
+    
     private autoHide() {
         setTimeout(() => {
-            this.hide();
+            this.messageSubject.next(<Message>{
+                name: null,
+                show: false
+            });
         }, 5000);
     }
 

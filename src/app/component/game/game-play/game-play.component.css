@@ -16,6 +16,10 @@
     background-color: #ffffff;
 }
 
+.columns .field:first-of-type {
+    margin-left: 9%;
+}
+
 .field-border {
     border-top: 1px solid;
     border-left: 1px solid;

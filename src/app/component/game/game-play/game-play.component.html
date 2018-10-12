@@ -18,8 +18,7 @@
             <p>Ships status {{ opponentRemainingShips }} / 10</p>
             <p>Number of shots {{ shotCounter }} / {{ selfRemainingShips }}</p>
         </div>
-        <div class="row">
-            <div class="field"></div>
+        <div class="row columns">
             <div class="field" *ngFor="let column of columns">
                 {{ column }}
             </div>
@@ -35,8 +34,7 @@
             <h1>Self</h1>
             <p>Ships status {{ selfRemainingShips }} / 10</p>
         </div>
-        <div class="row">
-            <div class="field"></div>
+        <div class="row columns">
             <div class="field" *ngFor="let column of columns">
                 {{ column }}
             </div>
