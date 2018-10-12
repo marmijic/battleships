@@ -88,19 +88,16 @@ export class DataService {
     }
 
     putData(params: string, body?: any): Observable<any> {
-        console.log(params, body)
         this.showLoader();
         const url: string = this.getUrl() + params;
         const options = this.getOptions();
         return this.http.put(url, body, options).pipe(map(
             response => {
-                console.log(response)
                 this.hideLoader();
                 return response;
             }),
             catchError(
                 (error: HttpErrorResponse) => {
-                    console.log(error)
                     this.hideLoader();
                     this.checkError(error.status);
                     return throwError(error)
@@ -124,6 +121,10 @@ export class DataService {
                 message: "The player hasn't played any games yet"
             },
             {
+                status: 403,
+                message: "Forbidden"
+            },
+            {
                 status: 400,
                 message: "Bad request"
             },
@@ -134,6 +135,10 @@ export class DataService {
             {
                 status: 409,
                 message: "Player with the supplied email already exist"
+            },
+            {
+                status: 500,
+                message: "Something went wrong"
             }
         ];
         if (status !== 404) {

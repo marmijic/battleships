@@ -70,6 +70,7 @@
 .field-legend .field {
     width: 50px;
     margin: 0 auto 20px;
+    cursor: default;
 }
 
 .field-legend .empty-field {

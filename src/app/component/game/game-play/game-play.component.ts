@@ -23,7 +23,7 @@ export class GamePlayComponent implements OnInit, OnDestroy {
   selfRemainingShips: number = 10;
   opponentGrid: Array<Array<Grid>> = [];
   selfGrid: Array<Array<Grid>> = [];
-  rows: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  rows: Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   columns: Array<string> = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
   showShotDialog: boolean = false;
   shots: Salvo = {
@@ -83,7 +83,6 @@ export class GamePlayComponent implements OnInit, OnDestroy {
   getData(): void {
     this.dataService.gameStatus(this.playerId, this.gameId).subscribe(
       response => {
-        console.log(response)
         if (response.body.game.player_turn) {
           this.playerTurnId = response.body.game.player_turn;
           const checkWin: string = response.body.game.won;
@@ -115,13 +114,12 @@ export class GamePlayComponent implements OnInit, OnDestroy {
   }
 
   autopilot() {
-    console.log(this.getRandomShotsIndex())
     this.dataService.turnAutopilot(this.playerId, this.gameId).subscribe(
       response => {
         if (response.status === 204) {
           this.messageService.add({ name: 'Auto pilot status: ON.', show: true, warning: false });
-          const shots:Array<string> = this.getRandomShotsIndex()
-          this.saveShots(shots);
+          this.shots.salvo = this.getRandomShotsIndex();
+          this.saveShots();
         }
       }
     )
@@ -131,7 +129,6 @@ export class GamePlayComponent implements OnInit, OnDestroy {
     let grid: Array<Array<Grid>> = [];
     for (let i = 0; i < arr.length; i++) {
       let row: Array<Grid> = [];
-      let emptyField: Array<Grid> = [];
       let arrRow: Array<string> = Array.from(arr[i]);
       for (let j = 0; j < arrRow.length; j++) {
         row.push({
@@ -161,9 +158,7 @@ export class GamePlayComponent implements OnInit, OnDestroy {
     return result
   }
 
-  private saveShots(randomShots?: Array<string>): void {
-    if(randomShots)
-      this.shots.salvo = randomShots;
+  private saveShots(): void {
     this.dataService.gameShot(this.playerId, this.gameId, this.shots).subscribe(
       response => {
         if (response.status === 200) {
