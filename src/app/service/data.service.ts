@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
-import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { Player } from '../models/player';
 import { LoaderService } from './loader.service';
@@ -11,7 +10,7 @@ import { map, catchError, } from 'rxjs/operators';
 
 @Injectable()
 export class DataService {
-    constructor(private http: HttpClient, private router: Router, private loaderService: LoaderService, private errorService: ErrorService) { }
+    constructor(private http: HttpClient, private loaderService: LoaderService, private errorService: ErrorService) { }
 
     playersList(): Observable<any> {
         return this.getData(`player/list`)

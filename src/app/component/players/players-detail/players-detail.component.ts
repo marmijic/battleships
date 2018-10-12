@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DataService, MessageService } from '../../../service';
+import { DataService, MessageService, ErrorService } from '../../../service';
 import { GameDetail } from '../../../models/game';
 import { Player } from '../../../models/player';
 import { map } from 'rxjs/operators';
@@ -20,7 +20,7 @@ export class PlayersDetailComponent implements OnInit, OnDestroy {
     id: ''
   };
 
-  constructor(private router: Router, private route: ActivatedRoute, private dataService: DataService) {
+  constructor(private router: Router, private route: ActivatedRoute, private dataService: DataService, private errorService: ErrorService) {
   }
 
   ngOnInit() {
@@ -53,7 +53,7 @@ export class PlayersDetailComponent implements OnInit, OnDestroy {
           })
         }
         else {
-          this.dataService.checkError(response.status);
+          this.errorService.checkError(response.status);
         }
       })
   }
