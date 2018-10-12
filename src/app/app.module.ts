@@ -21,7 +21,8 @@ import {
 import {
   DataService,
   LoaderService,
-  MessageService
+  MessageService,
+  ErrorService
 } from './service';
 
 import { AppRoutingModule } from './app.routing.module';
@@ -50,7 +51,8 @@ import { AppRoutingModule } from './app.routing.module';
   providers: [
     DataService,
     LoaderService,
-    MessageService
+    MessageService,
+    ErrorService
   ],
   bootstrap: [AppComponent]
 })

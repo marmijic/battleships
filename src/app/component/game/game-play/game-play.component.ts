@@ -65,7 +65,6 @@ export class GamePlayComponent implements OnInit, OnDestroy {
     };
   }
 
-
   ngOnInit() {
     this.subscriptions.push(this.route.params.subscribe(params => {
       this.playerId = params.playerId;
@@ -78,7 +77,6 @@ export class GamePlayComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(subscription =>
       subscription.unsubscribe()
     )
-    this.emptyFieldsArray = [];
   }
 
   getData(): void {
@@ -110,7 +108,6 @@ export class GamePlayComponent implements OnInit, OnDestroy {
     this.shots.salvo.push(`${number}x${letter}`);
     this.shotCounter++;
     if (this.selfRemainingShips === this.shotCounter || this.emptyFieldsArray.length === this.shotCounter) {
-      console.log(this.shots)
       this.saveShots();
     }
   }
@@ -161,7 +158,6 @@ export class GamePlayComponent implements OnInit, OnDestroy {
   }
 
   private saveShots(): void {
-    console.log(this.shots)
     this.dataService.gameShot(this.playerId, this.gameId, this.shots).subscribe(
       response => {
         if (response.status === 200) {
