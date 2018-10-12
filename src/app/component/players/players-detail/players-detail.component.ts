@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService, MessageService } from '../../../service';
 import { GameDetail } from '../../../models/game';
 import { Player } from '../../../models/player';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-players-detail',
@@ -25,7 +26,7 @@ export class PlayersDetailComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscriptions.push(this.route.params.subscribe(params => {
       this.player.id = params.id;
-      this.getPlayer(params.id).then(value => {
+      this.getPlayer(params.id).subscribe(value => {
         this.player.name = value.name;
         this.player.email = value.email;
       })
@@ -45,7 +46,7 @@ export class PlayersDetailComponent implements OnInit, OnDestroy {
         if (response.status === 200) {
           this.games = response.body.games;
           this.games.forEach(gameValue => {
-            this.getPlayer(gameValue.opponent_id).then(value => {
+            this.getPlayer(gameValue.opponent_id).subscribe(value => {
               gameValue.opponentName = value.name;
               gameValue.opponentEmail = value.email;
             })
@@ -57,17 +58,15 @@ export class PlayersDetailComponent implements OnInit, OnDestroy {
       })
   }
 
-  getPlayer(playerId: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.dataService.playerProfile(playerId).subscribe(
-        response => {
-          resolve({
-            name: response.body.name,
-            email: response.body.email
-          });
+  getPlayer(playerId: string): Observable<any> {
+    return this.dataService.playerProfile(playerId).pipe(
+      map(response => {
+        return {
+          name: response.body.name,
+          email: response.body.email
         }
-      )
-    })
+      })
+    )
   }
 
   navigateTo(gameId: string, gameStatus: string): void {
