@@ -6,7 +6,7 @@ export interface Shot {
 
 export interface SalvoResult {
     field: string;
-    result: String;
+    result?: String;
 }
 
 export interface Salvo {

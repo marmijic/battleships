@@ -91,11 +91,12 @@ export class DataService {
         this.showLoader();
         const url: string = this.getUrl() + params;
         const options = this.getOptions();
-        return this.http.put(url, body, options).pipe(map(
-            response => {
-                this.hideLoader();
-                return response;
-            }),
+        return this.http.put(url, body, options).pipe(
+            map(
+                response => {
+                    this.hideLoader();
+                    return response;
+                }),
             catchError(
                 (error: HttpErrorResponse) => {
                     this.hideLoader();

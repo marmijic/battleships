@@ -78,6 +78,7 @@ export class GamePlayComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(subscription =>
       subscription.unsubscribe()
     )
+    this.emptyFieldsArray = [];
   }
 
   getData(): void {
@@ -109,6 +110,7 @@ export class GamePlayComponent implements OnInit, OnDestroy {
     this.shots.salvo.push(`${number}x${letter}`);
     this.shotCounter++;
     if (this.selfRemainingShips === this.shotCounter || this.emptyFieldsArray.length === this.shotCounter) {
+      console.log(this.shots)
       this.saveShots();
     }
   }
@@ -152,13 +154,14 @@ export class GamePlayComponent implements OnInit, OnDestroy {
   private getRandomShotsIndex(): Array<string> {
     let result: Array<string> = [];
     for (let i = 0; i < this.selfRemainingShips; i++) {
-      const randomIndex = Math.floor(Math.random() * this.emptyFieldsArray.length)
-      result.push(`${this.emptyFieldsArray[randomIndex].number}x${this.emptyFieldsArray[randomIndex].letter}`)
+      const randomIndex = Math.floor(Math.random() * this.emptyFieldsArray.length);
+      result.push(`${this.emptyFieldsArray[randomIndex].number}x${this.emptyFieldsArray[randomIndex].letter}`);
     }
-    return result
+    return result;
   }
 
   private saveShots(): void {
+    console.log(this.shots)
     this.dataService.gameShot(this.playerId, this.gameId, this.shots).subscribe(
       response => {
         if (response.status === 200) {
@@ -166,7 +169,7 @@ export class GamePlayComponent implements OnInit, OnDestroy {
           let result: Array<SalvoResult> = [];
           Object.keys(response.body.salvo).forEach(value => {
             result.push({
-              field: value,
+              field: this.checkResult(value),
               result: response.body.salvo[value]
             })
           })
@@ -178,5 +181,12 @@ export class GamePlayComponent implements OnInit, OnDestroy {
         }
       }
     )
+  }
+
+  private checkResult(params: string): string {
+      let temp: Array<string> = Array.from(params);
+      temp[0] = (parseFloat(temp[0]) + 1).toString();
+      let result: string = temp.join('');
+    return result;
   }
 }
