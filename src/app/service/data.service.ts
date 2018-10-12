@@ -48,16 +48,21 @@ export class DataService {
         this.showLoader();
         const url: string = this.getUrl() + params;
         const options = this.getOptions();
-        return this.http.get(url, options).pipe(map(
-            response => {
-                this.hideLoader()
-                return response;
-            }),
-            error => {
-                this.hideLoader()
-                return error;
-            }
-        );
+        return this.http.get(url, options).pipe(
+            map(
+                response => {
+                    this.hideLoader()
+                    return response;
+                }),
+            catchError(
+                (error: HttpErrorResponse) => {
+                    console.log(error)
+                    this.hideLoader();
+                    this.addMessage('Error', true);
+                    return Observable.throw(error)
+                }
+            )
+        )
     }
 
     postData(params: string, body: Player): Observable<any> {
@@ -73,10 +78,11 @@ export class DataService {
             catchError(
                 (error: HttpErrorResponse) => {
                     this.hideLoader();
-                    this.addError(error.error.error_code, true);
+                    this.addMessage(error.error.error_code, true);
                     return Observable.throw(error)
                 }
-            ))
+            )
+        )
     }
 
     putData(params: string, body?: any): Observable<any> {
@@ -87,12 +93,16 @@ export class DataService {
             response => {
                 this.hideLoader();
                 return response;
-            },
-            error => {
-                this.hideLoader();
-                return error;
-            }
-        ))
+            }),
+            catchError(
+                (error: HttpErrorResponse) => {
+                    console.log(error)
+                    this.hideLoader();
+                    this.addMessage('foo', true);
+                    return Observable.throw(error)
+                }
+            )
+        )
     }
 
     private getUrl(): string {
@@ -113,7 +123,7 @@ export class DataService {
         this.loaderService.hide();
     }
 
-    private addError(error: string, show: boolean): void {
+    private addMessage(error: string, show: boolean): void {
         this.messageService.add({ name: error, show: show });
     }
 }
