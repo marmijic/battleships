@@ -13,12 +13,13 @@ export class MessageService {
     add(message) {
         this.messageSubject.next(<Message>{
             name: message.name,
-            show: message.show
+            show: message.show,
+            warning: message.warning
         });
         this.autoHide();
     }
 
-    hide() {
+    private hide() {
         this.messageSubject.next(<Message>{
             name: null,
             show: false

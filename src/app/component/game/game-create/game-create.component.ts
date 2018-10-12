@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DataService } from '../../../service';
+import { DataService, MessageService } from '../../../service';
 import { Player } from '../../../models/player';
 import { Router } from '@angular/router';
 
@@ -15,7 +15,7 @@ export class GameCreateComponent {
   opponents: Array<Player>;
   opponentIdValue: string = null;
 
-  constructor(private dataService: DataService, private router: Router) {
+  constructor(private router: Router, private dataService: DataService, private messageService: MessageService) {
     this.getData();
   }
 
@@ -52,15 +52,12 @@ export class GameCreateComponent {
     };
     this.dataService.createGame(this.opponentIdValue, body).subscribe(
       response => {
-        console.log(response)
         if (response.status === 201) {
           const gameId = response.body.game_id;
           const startingId = response.body.starting;
           this.router.navigateByUrl('game-play/' + startingId + '/' + gameId);
+          this.messageService.add({ name: 'Game was created', show: true, warning: false });
         }
-      },
-      error => {
-        console.warn(error);
       }
     );
   }

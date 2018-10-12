@@ -1,12 +1,19 @@
 .message-box {
     position: absolute;
-    width: 300px;
+    min-width: 450px;
     z-index: 1001;
-    background: rgba(255, 50, 50, 0.8);
-    left: calc(50% - 150px);
+    left: calc(50% - 225px);
     top: 2vh;
-    height: 115px;
     border-radius: 15px;
     padding: 25px;
     color: #FFFFFF;
+    text-align: center;
+}
+
+.warning {
+    background-color: rgba(255, 50, 50, 0.8);
+}
+
+.success {
+    background-color: rgba(40, 167, 69, 0.8)
 }

@@ -8,16 +8,23 @@ import { MessageService } from 'src/app/service';
   styleUrls: ['./message.component.css']
 })
 export class MessageComponent implements OnInit {
-  show: boolean = false;
-  name: string = null;
+  message: Message = {
+    show: false,
+    name: null,
+    warning: false
+  }
 
-  constructor(private messageService: MessageService) {}
+  constructor(private messageService: MessageService) {
+  }
 
   ngOnInit() {
     this.messageService.messageState.subscribe(
       (state: Message) => {
-        this.show = state.show;
-        this.name = state.name;
+        this.message = {
+          show: state.show,
+          name: state.name,
+          warning: state.warning
+        }
       }
     )
   }

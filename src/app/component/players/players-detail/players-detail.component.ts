@@ -52,14 +52,7 @@ export class PlayersDetailComponent implements OnInit, OnDestroy {
           })
         }
         else {
-          let responseMessage: string;
-          if (response.status === 204) {
-            responseMessage = "The player hasn't played any games yet!"
-          }
-          else if (response.status === 404) {
-            responseMessage = "The player does not exist!"
-          }
-          this.addError(responseMessage, true);
+          this.dataService.checkError(response.status);
         }
       })
   }

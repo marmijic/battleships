@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DataService } from '../../../service';
+import { DataService, MessageService } from '../../../service';
 import { Grid } from '../../../models/grid';
 import { GamePlayer } from '../../../models/game-player';
 import { Salvo, Shot, SalvoResult } from 'src/app/models/shot';
@@ -33,7 +33,7 @@ export class GamePlayComponent implements OnInit, OnDestroy {
   shotResult: Shot;
   emptyFields: number = 0;
 
-  constructor(private router: Router, private route: ActivatedRoute, private dataService: DataService) {
+  constructor(private router: Router, private route: ActivatedRoute, private dataService: DataService, private messageService: MessageService) {
     this.router.routeReuseStrategy.shouldReuseRoute = function () {
       return false;
     };
@@ -57,7 +57,6 @@ export class GamePlayComponent implements OnInit, OnDestroy {
   getData(): void {
     this.dataService.gameStatus(this.playerId, this.gameId).subscribe(
       response => {
-        console.log(response)
         if (response.body.game.player_turn) {
           this.playerTurnId = response.body.game.player_turn;
           const checkWin: string = response.body.game.won;
@@ -109,8 +108,9 @@ export class GamePlayComponent implements OnInit, OnDestroy {
   autopilot() {
     this.dataService.turnAutopilot(this.playerId, this.gameId).subscribe(
       response => {
-        if (response.status === 204)
-          this.getData();
+        if (response.status === 204) {
+          this.messageService.add({ name: 'Auto pilot status: ON', show: true, warning: false });
+        }
       }
     )
   }
