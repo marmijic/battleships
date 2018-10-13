@@ -9,9 +9,11 @@
         </div>
     </div>
     <div class="col-12 buttons text-right">
-        <button (click)="random()">Random shots</button>
-        <button class="btn btn-info" (click)="autopilot()">AUTOPILOT</button>
-        <button class="btn btn-default" [routerLink]="['/players/detail/' + playerId]">LEAVE</button>
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-secondary" (click)="random()">Random shots</button>
+            <button type="button" class="btn btn-secondary" (click)="autopilot()">AUTOPILOT</button>
+            <button type="button" class="btn btn-secondary" [routerLink]="['/players/detail/' + playerId]">LEAVE</button>
+        </div>
     </div>
     <div class="col-12 col-lg-6">
         <div class="row wrapper-intro text-center">
