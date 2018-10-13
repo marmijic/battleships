@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService, MessageService } from '../../../service';
@@ -11,25 +11,24 @@ import { Salvo, Shot, SalvoResult } from 'src/app/models/shot';
   templateUrl: './game-play.component.html',
   styleUrls: ['./game-play.component.css']
 })
-export class GamePlayComponent implements OnInit, OnDestroy {
+export class GamePlayComponent implements OnInit {
   private subscriptions: Subscription[] = [];
   playerId: string;
   gameId: string;
   playerTurnId: string;
-  responseMessage: string = null;
+  responseMessage: string;
   opponent: GamePlayer;
   self: GamePlayer;
-  opponentRemainingShips: number = 10;
-  selfRemainingShips: number = 10;
+  opponentRemainingShips: number;
+  selfRemainingShips: number;
   opponentGrid: Array<Array<Grid>> = [];
   selfGrid: Array<Array<Grid>> = [];
   rows: Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   columns: Array<string> = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
-  showShotDialog: boolean = false;
+  showShotDialog: boolean;
   shots: Salvo = {
     salvo: []
   };
-  shotCounter: number = 0;
   shotResult: Shot;
   emptyFieldsArray: Array<Grid> = [];
   gridStates: Array<GridState> = [
@@ -57,14 +56,11 @@ export class GamePlayComponent implements OnInit, OnDestroy {
       name: 'Hover on empty or unknown quadrant.',
       state: 'empty-field-hover'
     }
-  ]
+  ];
 
   constructor(private router: Router, private route: ActivatedRoute, private dataService: DataService, private messageService: MessageService) {
-    this.router.routeReuseStrategy.shouldReuseRoute = function () {
-      return false;
-    };
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
-
 
   ngOnInit() {
     this.subscriptions.push(this.route.params.subscribe(params => {
@@ -72,12 +68,6 @@ export class GamePlayComponent implements OnInit, OnDestroy {
       this.gameId = params.gameId;
       this.getData();
     }))
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(subscription =>
-      subscription.unsubscribe()
-    )
   }
 
   getData(): void {
@@ -107,22 +97,23 @@ export class GamePlayComponent implements OnInit, OnDestroy {
 
   shot(number: string, letter: string): void {
     this.shots.salvo.push(`${number}x${letter}`);
-    this.shotCounter++;
-    if (this.selfRemainingShips === this.shotCounter || this.emptyFieldsArray.length === this.shotCounter) {
+    if (this.selfRemainingShips === this.shots.salvo.length || this.emptyFieldsArray.length === this.shots.salvo.length) {
       this.saveShots();
     }
   }
 
   autopilot() {
+    this.random();
     this.dataService.turnAutopilot(this.playerId, this.gameId).subscribe(
       response => {
-        if (response.status === 204) {
-          this.messageService.add({ name: 'Auto pilot status: ON.', show: true, warning: false });
-          this.shots.salvo = this.getRandomShotsIndex();
-          this.saveShots();
-        }
+        this.messageService.add({ name: 'Auto pilot status: ON.', show: true, warning: false });
       }
     )
+  }
+
+  random() {
+    this.shots.salvo = this.getRandomShotsIndex();
+    this.saveShots();
   }
 
   private setGrid(arr: Array<string>, flag: boolean): Array<Array<Grid>> {
@@ -152,10 +143,10 @@ export class GamePlayComponent implements OnInit, OnDestroy {
   private getRandomShotsIndex(): Array<string> {
     let result: Array<string> = [];
     for (let i = 0; i < this.selfRemainingShips; i++) {
-      const randomIndex = Math.floor(Math.random() * this.emptyFieldsArray.length)
-      result.push(`${this.emptyFieldsArray[randomIndex].number}x${this.emptyFieldsArray[randomIndex].letter}`)
+      const randomIndex = Math.floor(Math.random() * this.emptyFieldsArray.length);
+      result.push(`${this.emptyFieldsArray[randomIndex].number}x${this.emptyFieldsArray[randomIndex].letter}`);
     }
-    return result
+    return result;
   }
 
   private saveShots(): void {
@@ -166,7 +157,7 @@ export class GamePlayComponent implements OnInit, OnDestroy {
           let result: Array<SalvoResult> = [];
           Object.keys(response.body.salvo).forEach(value => {
             result.push({
-              field: value,
+              field: this.checkResult(value),
               result: response.body.salvo[value]
             })
           })
@@ -178,5 +169,12 @@ export class GamePlayComponent implements OnInit, OnDestroy {
         }
       }
     )
+  }
+
+  private checkResult(params: string): string {
+    let temp: Array<string> = Array.from(params);
+    temp[0] = (parseFloat(temp[0]) + 1).toString();
+    let result: string = temp.join('');
+    return result;
   }
 }

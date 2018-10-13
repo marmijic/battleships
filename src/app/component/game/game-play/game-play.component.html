@@ -9,14 +9,17 @@
         </div>
     </div>
     <div class="col-12 buttons text-right">
-        <button class="btn btn-info" (click)="autopilot()">AUTOPILOT</button>
-        <button class="btn btn-default" [routerLink]="['/players/detail/' + playerId]">LEAVE</button>
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-secondary" (click)="random()">Random shots</button>
+            <button type="button" class="btn btn-secondary" (click)="autopilot()">AUTOPILOT</button>
+            <button type="button" class="btn btn-secondary" [routerLink]="['/players/detail/' + playerId]">LEAVE</button>
+        </div>
     </div>
     <div class="col-12 col-lg-6">
         <div class="row wrapper-intro text-center">
             <h1>Opponent</h1>
             <p>Ships status {{ opponentRemainingShips }} / 10</p>
-            <p>Number of shots {{ shotCounter }} / {{ selfRemainingShips }}</p>
+            <p>Number of shots {{ shots.salvo.length }} / {{ selfRemainingShips }}</p>
         </div>
         <div class="row columns">
             <div class="field" *ngFor="let column of columns">
@@ -25,11 +28,11 @@
         </div>
         <div class="row letter-row opponent" *ngFor="let row of opponentGrid; let i = index">
             <div class="field">{{ rows[i] + 1 }}</div>
-            <button class="field field-border" *ngFor="let column of row; let j = index" [disabled]="column.value !== '.'" (click)="shot(column.number - 1, column.letter); column.value = 'S'" [ngClass]="{'empty-field': column.value === '.','ship-field': column.value === '#','missed-field': column.value === 'O','shot-field': column.value === 'X', 'user-shot': column.value === 'S'}">
+            <button class="field field-border" *ngFor="let column of row; let j = index" [disabled]="column.value !== '.'" (click)="shot(column.number, column.letter); column.value = 'S'" [ngClass]="{'empty-field': column.value === '.','ship-field': column.value === '#','missed-field': column.value === 'O','shot-field': column.value === 'X', 'user-shot': column.value === 'S'}">
             </button>
         </div>
     </div>
-    <div class="col-12 col-lg-6">
+    <div class="col-12 col-lg-6 self-grid">
         <div class="row wrapper-intro text-center">
             <h1>Self</h1>
             <p>Ships status {{ selfRemainingShips }} / 10</p>

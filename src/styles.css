@@ -37,6 +37,7 @@ button:last-of-type {
 
 .modal {
     background-color: rgba(0, 0, 0, .35);
+    overflow-y: auto;
 }
 
 .spinner {

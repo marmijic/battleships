@@ -5,7 +5,7 @@ import {Navbar} from '../../models/navbar'
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styles: [``]
 })
 export class NavbarComponent {
   showNavbar: boolean = false;
