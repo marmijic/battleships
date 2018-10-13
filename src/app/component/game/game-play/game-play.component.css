@@ -77,6 +77,12 @@
     border: 1px solid;
 }
 
+@media(max-width: 767px) {
+    .self-grid {
+        margin-top: 70px;
+    }
+}
+
 @media(max-width: 600px) {
     .row {
         margin-left: 0px;

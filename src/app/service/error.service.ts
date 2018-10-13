@@ -17,7 +17,7 @@ export class ErrorService {
             },
             {
                 status: 204,
-                message: "The player hasn't played any games yet"
+                message: "The player hasn't played any game yet"
             },
             {
                 status: 403,
@@ -34,18 +34,14 @@ export class ErrorService {
             {
                 status: 409,
                 message: "Player with the supplied email already exist"
-            },
-            {
-                status: 500,
-                message: "Something went wrong"
             }
         ];
-        if (status === 204) {
-            this.router.navigateByUrl('players')
-        }
-        else if (status !== 404) {
+        if (status !== 404) {
             errors = errors.filter(value => value.status === status);
             this.addMessage(errors[0].message, true, true);
+            if (status === 204) {
+                this.router.navigateByUrl('players')
+            }
         }
         else {
             this.router.navigateByUrl('not-found')

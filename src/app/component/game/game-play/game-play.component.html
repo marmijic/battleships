@@ -9,6 +9,7 @@
         </div>
     </div>
     <div class="col-12 buttons text-right">
+        <button (click)="random()">Random shots</button>
         <button class="btn btn-info" (click)="autopilot()">AUTOPILOT</button>
         <button class="btn btn-default" [routerLink]="['/players/detail/' + playerId]">LEAVE</button>
     </div>
@@ -29,7 +30,7 @@
             </button>
         </div>
     </div>
-    <div class="col-12 col-lg-6">
+    <div class="col-12 col-lg-6 self-grid">
         <div class="row wrapper-intro text-center">
             <h1>Self</h1>
             <p>Ships status {{ selfRemainingShips }} / 10</p>

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService, MessageService } from '../../../service';
@@ -11,21 +11,21 @@ import { Salvo, Shot, SalvoResult } from 'src/app/models/shot';
   templateUrl: './game-play.component.html',
   styleUrls: ['./game-play.component.css']
 })
-export class GamePlayComponent implements OnInit, OnDestroy {
+export class GamePlayComponent implements OnInit {
   private subscriptions: Subscription[] = [];
   playerId: string;
   gameId: string;
   playerTurnId: string;
-  responseMessage: string = null;
+  responseMessage: string;
   opponent: GamePlayer;
   self: GamePlayer;
-  opponentRemainingShips: number = 10;
-  selfRemainingShips: number = 10;
+  opponentRemainingShips: number;
+  selfRemainingShips: number;
   opponentGrid: Array<Array<Grid>> = [];
   selfGrid: Array<Array<Grid>> = [];
   rows: Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   columns: Array<string> = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
-  showShotDialog: boolean = false;
+  showShotDialog: boolean;
   shots: Salvo = {
     salvo: []
   };
@@ -56,7 +56,7 @@ export class GamePlayComponent implements OnInit, OnDestroy {
       name: 'Hover on empty or unknown quadrant.',
       state: 'empty-field-hover'
     }
-  ]
+  ];
 
   constructor(private router: Router, private route: ActivatedRoute, private dataService: DataService, private messageService: MessageService) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
@@ -68,12 +68,6 @@ export class GamePlayComponent implements OnInit, OnDestroy {
       this.gameId = params.gameId;
       this.getData();
     }))
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(subscription =>
-      subscription.unsubscribe()
-    )
   }
 
   getData(): void {
@@ -109,15 +103,17 @@ export class GamePlayComponent implements OnInit, OnDestroy {
   }
 
   autopilot() {
+    this.random();
     this.dataService.turnAutopilot(this.playerId, this.gameId).subscribe(
       response => {
-        if (response.status === 204) {
-          this.messageService.add({ name: 'Auto pilot status: ON.', show: true, warning: false });
-          this.shots.salvo = this.getRandomShotsIndex();
-          this.saveShots();
-        }
+        this.messageService.add({ name: 'Auto pilot status: ON.', show: true, warning: false });
       }
     )
+  }
+
+  random() {
+    this.shots.salvo = this.getRandomShotsIndex();
+    this.saveShots();
   }
 
   private setGrid(arr: Array<string>, flag: boolean): Array<Array<Grid>> {
@@ -176,9 +172,9 @@ export class GamePlayComponent implements OnInit, OnDestroy {
   }
 
   private checkResult(params: string): string {
-      let temp: Array<string> = Array.from(params);
-      temp[0] = (parseFloat(temp[0]) + 1).toString();
-      let result: string = temp.join('');
+    let temp: Array<string> = Array.from(params);
+    temp[0] = (parseFloat(temp[0]) + 1).toString();
+    let result: string = temp.join('');
     return result;
   }
 }
