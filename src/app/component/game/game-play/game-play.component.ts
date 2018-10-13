@@ -29,7 +29,6 @@ export class GamePlayComponent implements OnInit, OnDestroy {
   shots: Salvo = {
     salvo: []
   };
-  shotCounter: number = 0;
   shotResult: Shot;
   emptyFieldsArray: Array<Grid> = [];
   gridStates: Array<GridState> = [
@@ -60,9 +59,7 @@ export class GamePlayComponent implements OnInit, OnDestroy {
   ]
 
   constructor(private router: Router, private route: ActivatedRoute, private dataService: DataService, private messageService: MessageService) {
-    this.router.routeReuseStrategy.shouldReuseRoute = function () {
-      return false;
-    };
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
 
   ngOnInit() {
@@ -106,8 +103,7 @@ export class GamePlayComponent implements OnInit, OnDestroy {
 
   shot(number: string, letter: string): void {
     this.shots.salvo.push(`${number}x${letter}`);
-    this.shotCounter++;
-    if (this.selfRemainingShips === this.shotCounter || this.emptyFieldsArray.length === this.shotCounter) {
+    if (this.selfRemainingShips === this.shots.salvo.length || this.emptyFieldsArray.length === this.shots.salvo.length) {
       this.saveShots();
     }
   }

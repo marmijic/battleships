@@ -6,8 +6,17 @@ import { Player } from '../../../models/player';
 @Component({
   selector: 'app-player-create',
   templateUrl: './player-create.component.html',
-  styleUrls: ['./player-create.component.css']
+  styles: [`
+    .player-form {
+      margin-bottom: 20px;
+    }
+
+    .player-form input:last-of-type {
+        margin: 10px 0 0;
+    }
+  `]
 })
+
 export class PlayerCreateComponent {
   createPlayerForm: FormGroup;
   responseMessage: string = '';

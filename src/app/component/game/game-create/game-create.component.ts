@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-game-create',
   templateUrl: './game-create.component.html',
-  styleUrls: ['./game-create.component.css']
+  styles: [``]
 })
 export class GameCreateComponent {
   players: Array<Player>;

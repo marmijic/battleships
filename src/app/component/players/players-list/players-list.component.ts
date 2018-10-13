@@ -5,7 +5,7 @@ import { Player } from '../../../models/player';
 @Component({
   selector: 'app-players-list',
   templateUrl: './players-list.component.html',
-  styleUrls: ['./players-list.component.css']
+  styles: [``]
 })
 export class PlayersListComponent  {
   players: Array<Player>;

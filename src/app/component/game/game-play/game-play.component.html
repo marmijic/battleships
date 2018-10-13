@@ -16,7 +16,7 @@
         <div class="row wrapper-intro text-center">
             <h1>Opponent</h1>
             <p>Ships status {{ opponentRemainingShips }} / 10</p>
-            <p>Number of shots {{ shotCounter }} / {{ selfRemainingShips }}</p>
+            <p>Number of shots {{ shots.salvo.length }} / {{ selfRemainingShips }}</p>
         </div>
         <div class="row columns">
             <div class="field" *ngFor="let column of columns">
