@@ -1,5 +1,5 @@
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 import {
     HomeComponent,
     PlayersListComponent,
@@ -8,16 +8,16 @@ import {
     GameCreateComponent,
     GamePlayComponent,
     NotFoundComponent
-} from "./component";
+} from './component';
 
 const routes: Routes = [
-    { path: "", component: HomeComponent },
-    { path: "players", component: PlayersListComponent },
-    { path: "player-create", component: PlayerCreateComponent },
-    { path: "players/detail/:id", component: PlayersDetailComponent },
-    { path: "game-create", component: GameCreateComponent },
-    { path: "game-play/:playerId/:gameId", component: GamePlayComponent },
-    { path: "**", component: NotFoundComponent }
+    { path: '', component: HomeComponent },
+    { path: 'players', component: PlayersListComponent },
+    { path: 'player-create', component: PlayerCreateComponent },
+    { path: 'players/detail/:id', component: PlayersDetailComponent },
+    { path: 'game-create', component: GameCreateComponent },
+    { path: 'game-play/:playerId/:gameId', component: GamePlayComponent },
+    { path: '**', component: NotFoundComponent }
 ];
 
 @NgModule({

@@ -19,6 +19,6 @@ export class PlayersListComponent  {
       response => {
         this.players = response.body.players;
       }
-    )
+    );
   }
 }

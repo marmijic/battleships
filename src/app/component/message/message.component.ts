@@ -12,7 +12,7 @@ export class MessageComponent implements OnInit {
     show: false,
     name: null,
     warning: false
-  }
+  };
 
   constructor(private messageService: MessageService) {
   }
@@ -24,8 +24,8 @@ export class MessageComponent implements OnInit {
           show: state.show,
           name: state.name,
           warning: state.warning
-        }
+        };
       }
-    )
+    );
   }
 }

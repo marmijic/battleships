@@ -58,7 +58,12 @@ export class GamePlayComponent implements OnInit {
     }
   ];
 
-  constructor(private router: Router, private route: ActivatedRoute, private dataService: DataService, private messageService: MessageService) {
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private dataService: DataService,
+    private messageService: MessageService
+  ) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
 
@@ -67,7 +72,7 @@ export class GamePlayComponent implements OnInit {
       this.playerId = params.playerId;
       this.gameId = params.gameId;
       this.getData();
-    }))
+    }));
   }
 
   getData(): void {
@@ -83,16 +88,14 @@ export class GamePlayComponent implements OnInit {
             this.selfRemainingShips = this.self.remaining_ships;
             this.opponentGrid = this.setGrid(this.opponent.board, true);
             this.selfGrid = this.setGrid(this.self.board, false);
-          }
-          else if (this.playerId !== this.playerTurnId && !checkWin) {
+          } else if (this.playerId !== this.playerTurnId && !checkWin) {
             this.responseMessage = `It's not your turn, the player ${this.playerTurnId} now play!`;
           }
-        }
-        else if (response.body.game.won) {
+        } else if (response.body.game.won) {
           this.responseMessage = `Player ${response.body.game.won} has won!`;
         }
       }
-    )
+    );
   }
 
   shot(number: string, letter: string): void {
@@ -108,7 +111,7 @@ export class GamePlayComponent implements OnInit {
       response => {
         this.messageService.add({ name: 'Auto pilot status: ON.', show: true, warning: false });
       }
-    )
+    );
   }
 
   random() {
@@ -117,22 +120,22 @@ export class GamePlayComponent implements OnInit {
   }
 
   private setGrid(arr: Array<string>, flag: boolean): Array<Array<Grid>> {
-    let grid: Array<Array<Grid>> = [];
+    const grid: Array<Array<Grid>> = [];
     for (let i = 0; i < arr.length; i++) {
-      let row: Array<Grid> = [];
-      let arrRow: Array<string> = Array.from(arr[i]);
+      const row: Array<Grid> = [];
+      const arrRow: Array<string> = Array.from(arr[i]);
       for (let j = 0; j < arrRow.length; j++) {
         row.push({
           value: arrRow[j],
           number: this.rows[i],
           letter: this.columns[j]
-        })
+        });
         if (arrRow[j] === '.' && flag) {
           this.emptyFieldsArray.push({
             value: arrRow[j],
             number: this.rows[i],
             letter: this.columns[j]
-          })
+          });
         }
       }
       grid.push(row);
@@ -141,7 +144,7 @@ export class GamePlayComponent implements OnInit {
   }
 
   private getRandomShotsIndex(): Array<string> {
-    let result: Array<string> = [];
+    const result: Array<string> = [];
     for (let i = 0; i < this.selfRemainingShips; i++) {
       const randomIndex = Math.floor(Math.random() * this.emptyFieldsArray.length);
       result.push(`${this.emptyFieldsArray[randomIndex].number}x${this.emptyFieldsArray[randomIndex].letter}`);
@@ -154,13 +157,13 @@ export class GamePlayComponent implements OnInit {
       response => {
         if (response.status === 200) {
           this.showShotDialog = true;
-          let result: Array<SalvoResult> = [];
+          const result: Array<SalvoResult> = [];
           Object.keys(response.body.salvo).forEach(value => {
             result.push({
               field: this.checkResult(value),
               result: response.body.salvo[value]
-            })
-          })
+            });
+          });
           this.shotResult = {
             playerTurn: response.body.game.player_turn,
             gameId: this.gameId,
@@ -168,13 +171,13 @@ export class GamePlayComponent implements OnInit {
           };
         }
       }
-    )
+    );
   }
 
   private checkResult(params: string): string {
-    let temp: Array<string> = Array.from(params);
+    const temp: Array<string> = Array.from(params);
     temp[0] = (parseFloat(temp[0]) + 1).toString();
-    let result: string = temp.join('');
+    const result: string = temp.join('');
     return result;
   }
 }

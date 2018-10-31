@@ -1,6 +1,6 @@
-import { Injectable } from "@angular/core";
-import { Subject } from "rxjs";
-import { Loader } from "../models/loader";
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
+import { Loader } from '../models/loader';
 
 @Injectable({
     providedIn: 'root'
@@ -18,6 +18,6 @@ export class LoaderService {
     hide() {
         setTimeout(() => {
             this.loaderSubject.next(<Loader>{ show: false });
-        }, 500)
+        }, 500);
     }
 }

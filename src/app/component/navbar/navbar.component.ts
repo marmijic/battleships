@@ -1,6 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
-import {Navbar} from '../../models/navbar'
+import { Navbar } from '../../models/navbar';
 
 @Component({
   selector: 'app-navbar',
@@ -8,7 +8,7 @@ import {Navbar} from '../../models/navbar'
   styles: [``]
 })
 export class NavbarComponent {
-  showNavbar: boolean = false;
+  showNavbar: boolean;
   navItems: Array<Navbar> = [
     {
       name: 'Players',
@@ -18,7 +18,7 @@ export class NavbarComponent {
       name: 'Create game',
       link: 'game-create'
     }
-  ]
+  ];
   constructor(private router: Router) {
     this.checkWindowSize();
   }
@@ -36,18 +36,16 @@ export class NavbarComponent {
   }
 
   navClick(): void {
-    this.checkWindowSize()
+    this.checkWindowSize();
   }
 
   checkWindowSize(): void {
     const bodyWidth = document.getElementsByTagName('body')[0].offsetWidth;
     if (bodyWidth > 991) {
       this.showNavbar = true;
-    }
-    else {
+    } else {
       this.showNavbar = false;
     }
   }
-
 
 }

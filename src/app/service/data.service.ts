@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Player } from '../models/player';
 import { LoaderService } from './loader.service';
@@ -13,7 +13,7 @@ export class DataService {
     constructor(private http: HttpClient, private loaderService: LoaderService, private errorService: ErrorService) { }
 
     playersList(): Observable<any> {
-        return this.getData(`player/list`)
+        return this.getData(`player/list`);
     }
 
     playerProfile(playerId: string): Observable<any> {
@@ -21,7 +21,7 @@ export class DataService {
     }
 
     playerDetail(playerId: string): Observable<any> {
-        return this.getData(`player/${playerId}/game/list`)
+        return this.getData(`player/${playerId}/game/list`);
     }
 
     createPlayer(body: Player): Observable<any> {
@@ -29,7 +29,7 @@ export class DataService {
     }
 
     createGame(opponentId: string, body: any): Observable<any> {
-        return this.postData(`player/${opponentId}/game`, body)
+        return this.postData(`player/${opponentId}/game`, body);
     }
 
     gameStatus(playerId: string, gameId: string): Observable<any> {
@@ -37,11 +37,11 @@ export class DataService {
     }
 
     gameShot(playerId: string, gameId: string, body: any) {
-        return this.putData(`player/${playerId}/game/${gameId}`, body)
+        return this.putData(`player/${playerId}/game/${gameId}`, body);
     }
 
     turnAutopilot(playerId: string, gameId: string) {
-        return this.putData(`player/${playerId}/game/${gameId}/autopilot`)
+        return this.putData(`player/${playerId}/game/${gameId}/autopilot`);
     }
 
     getData(params: string): Observable<any> {
@@ -51,17 +51,17 @@ export class DataService {
         return this.http.get(url, options).pipe(
             map(
                 response => {
-                    this.hideLoader()
+                    this.hideLoader();
                     return response;
                 }),
             catchError(
                 (error: HttpErrorResponse) => {
                     this.hideLoader();
                     this.errorService.checkError(error.status);
-                    return throwError(error)
+                    return throwError(error);
                 }
             )
-        )
+        );
     }
 
     postData(params: string, body: Player): Observable<any> {
@@ -78,10 +78,10 @@ export class DataService {
                 (error: HttpErrorResponse) => {
                     this.hideLoader();
                     this.errorService.checkError(error.status);
-                    return throwError(error)
+                    return throwError(error);
                 }
             )
-        )
+        );
     }
 
     putData(params: string, body?: any): Observable<any> {
@@ -98,10 +98,10 @@ export class DataService {
                 (error: HttpErrorResponse) => {
                     this.hideLoader();
                     this.errorService.checkError(error.status);
-                    return throwError(error)
+                    return throwError(error);
                 }
             )
-        )
+        );
     }
 
     private getUrl(): string {

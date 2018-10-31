@@ -29,15 +29,15 @@ export class PlayersDetailComponent implements OnInit, OnDestroy {
       this.getPlayer(params.id).subscribe(value => {
         this.player.name = value.name;
         this.player.email = value.email;
-      })
+      });
       this.getData();
-    }))
+    }));
   }
 
   ngOnDestroy() {
     this.subscriptions.forEach(subscription =>
       subscription.unsubscribe()
-    )
+    );
   }
 
   getData() {
@@ -49,13 +49,12 @@ export class PlayersDetailComponent implements OnInit, OnDestroy {
             this.getPlayer(gameValue.opponent_id).subscribe(value => {
               gameValue.opponentName = value.name;
               gameValue.opponentEmail = value.email;
-            })
-          })
-        }
-        else {
+            });
+          });
+        } else {
           this.errorService.checkError(response.status);
         }
-      })
+      });
   }
 
   getPlayer(playerId: string): Observable<any> {
@@ -64,9 +63,9 @@ export class PlayersDetailComponent implements OnInit, OnDestroy {
         return {
           name: response.body.name,
           email: response.body.email
-        }
+        };
       })
-    )
+    );
   }
 
   navigateTo(gameId: string, gameStatus: string): void {
