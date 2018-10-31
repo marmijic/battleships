@@ -1,6 +1,6 @@
-import { Injectable } from "@angular/core";
-import { Message } from "../models/message";
-import { Subject } from "rxjs";
+import { Injectable } from '@angular/core';
+import { Message } from '../models/message';
+import { Subject } from 'rxjs';
 
 
 @Injectable()
@@ -18,7 +18,7 @@ export class MessageService {
         });
         this.autoHide();
     }
-    
+
     private autoHide() {
         setTimeout(() => {
             this.messageSubject.next(<Message>{

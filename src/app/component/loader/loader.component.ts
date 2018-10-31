@@ -8,7 +8,7 @@ import { LoaderService } from 'src/app/service';
   styleUrls: ['./loader.component.css']
 })
 export class LoaderComponent implements OnInit {
-  show: boolean = true;
+  show: boolean;
 
   constructor(private loaderService: LoaderService) {
     this.loaderService.hide();
@@ -19,7 +19,7 @@ export class LoaderComponent implements OnInit {
       (state: Loader) => {
         this.show = state.show;
       }
-    )
+    );
   }
 
 }

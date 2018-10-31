@@ -25,7 +25,7 @@ export class GameCreateComponent {
         this.players = response.body.players;
         this.setPlayers();
       }
-    )
+    );
   }
 
   setPlayers(): void {
@@ -44,7 +44,7 @@ export class GameCreateComponent {
   }
 
   createGame(): void {
-    let body: any = {
+    const body: any = {
       player_id: this.challengerIdValue,
     };
     this.dataService.createGame(this.opponentIdValue, body).subscribe(

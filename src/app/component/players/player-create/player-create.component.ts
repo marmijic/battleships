@@ -19,15 +19,15 @@ import { Player } from '../../../models/player';
 
 export class PlayerCreateComponent {
   createPlayerForm: FormGroup;
-  responseMessage: string = '';
+  responseMessage: string;
 
-  constructor(private FormBuilder: FormBuilder, private dataService: DataService, private messageService: MessageService) {
+  constructor(private formBuilder: FormBuilder, private dataService: DataService, private messageService: MessageService) {
     this.setForm();
   }
 
   saveData() {
     const emailValid = /([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-    let body: Player = {
+    const body: Player = {
       name: this.createPlayerForm.value.nameInput,
       email: this.createPlayerForm.value.emailInput
     };
@@ -39,18 +39,17 @@ export class PlayerCreateComponent {
             this.setForm();
           }
         }
-      )
-    }
-    else {
+      );
+    } else {
       this.messageService.add({ name: 'Invalid email address', show: true, warning: true });
     }
 
   }
 
   setForm() {
-    this.createPlayerForm = this.FormBuilder.group({
+    this.createPlayerForm = this.formBuilder.group({
       nameInput: ['', [Validators.required]],
       emailInput: ['', [Validators.required]]
-    })
+    });
   }
 }

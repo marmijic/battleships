@@ -1,7 +1,7 @@
-import { Injectable } from "@angular/core";
-import { MessageService } from "./message.service";
-import { ErrorMessage } from "../models/message";
-import { Router } from "@angular/router";
+import { Injectable } from '@angular/core';
+import { MessageService } from './message.service';
+import { ErrorMessage } from '../models/message';
+import { Router } from '@angular/router';
 
 
 @Injectable()
@@ -13,38 +13,37 @@ export class ErrorService {
         let errors: Array<ErrorMessage> = [
             {
                 status: 201,
-                message: "No contenct"
+                message: 'No contenct'
             },
             {
                 status: 204,
-                message: "The player hasn't played any game yet"
+                message: 'The player hasn\'t played any game yet'
             },
             {
                 status: 403,
-                message: "Forbidden"
+                message: 'Forbidden'
             },
             {
                 status: 400,
-                message: "Bad request"
+                message: 'Bad request'
             },
             {
                 status: 405,
-                message: "Not allowed"
+                message: 'Not allowed'
             },
             {
                 status: 409,
-                message: "Player with the supplied email already exist"
+                message: 'Player with the supplied email already exist'
             }
         ];
         if (status !== 404) {
             errors = errors.filter(value => value.status === status);
             this.addMessage(errors[0].message, true, true);
             if (status === 204) {
-                this.router.navigateByUrl('players')
+                this.router.navigateByUrl('players');
             }
-        }
-        else {
-            this.router.navigateByUrl('not-found')
+        } else {
+            this.router.navigateByUrl('not-found');
         }
     }
 

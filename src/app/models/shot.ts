@@ -1,7 +1,7 @@
 export interface Shot {
     playerTurn: string;
     gameId: string;
-    salvo: Array<SalvoResult>
+    salvo: Array<SalvoResult>;
 }
 
 export interface SalvoResult {

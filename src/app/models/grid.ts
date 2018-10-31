@@ -4,7 +4,7 @@ export interface Grid {
   letter: string;
 }
 
-export interface GridState{
+export interface GridState {
   name: string;
   state: string;
 }
